@@ -54,12 +54,22 @@ OD算法练习
 
 ### 字符串
 
-[一年中的第几天]:https://leetcode.cn/problems/day-of-the-year/
+[1154. 一年中的第几天](https://leetcode.cn/problems/day-of-the-year/)
 
 ```javascript
 1154. 一年中的第几天
 提示
-简单
+简单/**
+ * @param {character[]} s
+ * @return {void} Do not return anything, modify s in-place instead.
+ */
+var reverseString = function(s) {
+    for (let i = 0,  j = s.length -1; i<j; i++, j--) {
+        let temp = s[i]
+        s[i] = s[j]
+        s[j] = temp
+    }
+};
 113
 相关企业
 给你一个字符串 date ，按 YYYY-MM-DD 格式表示一个 现行公元纪年法 日期。返回该日期是当年的第几天。
@@ -93,7 +103,7 @@ var dayOfYear = function(date) {
 };
 ```
 
-[验证回文串]:https://leetcode.cn/problems/valid-palindrome/
+[125. 验证回文串](https://leetcode.cn/problems/valid-palindrome/)
 
 ```javascript
 如果在将所有大写字符转换为小写字符、并移除所有非字母数字字符之后，短语正着读和反着读都一样。则可以认为该短语是一个 回文串 。
@@ -131,5 +141,204 @@ var isPalindrome = function(s) {
     return true
 };
 
+```
+
+[344. 反转字符串](https://leetcode.cn/problems/reverse-string/)
+
+```javascript
+344. 反转字符串
+提示
+简单
+785
+相关企业
+编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 s 的形式给出。
+
+不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
+
+ 
+
+示例 1：
+
+输入：s = ["h","e","l","l","o"]
+输出：["o","l","l","e","h"]
+示例 2：
+
+输入：s = ["H","a","n","n","a","h"]
+输出：["h","a","n","n","a","H"]
+
+/**
+ * @param {character[]} s
+ * @return {void} Do not return anything, modify s in-place instead.
+ */
+var reverseString = function(s) {
+    for (let i = 0,  j = s.length -1; i<j; i++, j--) {
+        let temp = s[i]
+        s[i] = s[j]
+        s[j] = temp
+    }
+};
+```
+
+[20. 有效的括号](https://leetcode.cn/problems/valid-parentheses/)
+
+```javascript
+20. 有效的括号
+提示
+简单
+4K
+相关企业
+给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
+
+有效字符串需满足：
+
+左括号必须用相同类型的右括号闭合。
+左括号必须以正确的顺序闭合。
+每个右括号都有一个对应的相同类型的左括号。
+ 
+
+示例 1：
+
+输入：s = "()"
+输出：true
+示例 2：
+
+输入：s = "()[]{}"
+输出：true
+示例 3：
+
+输入：s = "(]"
+输出：false
+
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var isValid = function(s) {
+    const l = s.length
+    if (l % 2 === 1) return false
+    let stack = []
+    const pairs = new Map([
+        [')', '('],
+        ['}', '{'],
+        [']', '[']
+    ])
+    for (let i = 0; i<s.length ; i++) {
+        if (pairs.has(s[i])) {
+            if (pairs.get(s[i]) !== stack[stack.length - 1] || !stack.length) {
+                return false
+            }
+            stack.pop()
+        }
+        else {
+            stack.push(s[i])
+        }
+    }
+    return !stack.length
+};
+```
+
+[392. 判断子序列](https://leetcode.cn/problems/is-subsequence/)
+
+```javascript
+392. 判断子序列
+简单
+900
+相关企业
+给定字符串 s 和 t ，判断 s 是否为 t 的子序列。
+
+字符串的一个子序列是原始字符串删除一些（也可以不删除）字符而不改变剩余字符相对位置形成的新字符串。（例如，"ace"是"abcde"的一个子序列，而"aec"不是）。
+
+进阶：
+
+如果有大量输入的 S，称作 S1, S2, ... , Sk 其中 k >= 10亿，你需要依次检查它们是否为 T 的子序列。在这种情况下，你会怎样改变代码？
+
+致谢：
+
+特别感谢 @pbrother 添加此问题并且创建所有测试用例。
+
+ 
+
+示例 1：
+
+输入：s = "abc", t = "ahbgdc"
+输出：true
+示例 2：
+
+输入：s = "axc", t = "ahbgdc"
+输出：false
+
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+var isSubsequence = function(s, t) {
+    if (s.length < 1) return true
+    let i = 0
+    while (i < t.length) {
+        if (s[0] === t[i]) {
+            const subs = s.substring(1)
+            const subt = t.substring(i+1)
+            return isSubsequence(subs, subt)
+        }
+        i++
+    }
+    return false
+}
+```
+
+[409. 最长回文串](https://leetcode.cn/problems/longest-palindrome/)
+
+给定一个包含大写字母和小写字母的字符串 `s` ，返回 *通过这些字母构造成的 **最长的回文串*** 。
+
+在构造过程中，请注意 **区分大小写** 。比如 `"Aa"` 不能当做一个回文字符串。
+
+ 
+
+**示例 1:**
+
+```
+输入:s = "abccccdd"
+输出:7
+解释:
+我们可以构造的最长的回文串是"dccaccd", 它的长度是 7。
+```
+
+**示例 2:**
+
+```
+输入:s = "a"
+输出:1
+```
+
+**示例 3：**
+
+```
+输入:s = "aaaaaccc"
+输出:7
+```
+
+```javascript
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var longestPalindrome = function(s) {
+    let ans = 0 
+    let hashmap = new Map()
+    let flag = 0
+    for (let i = 0; i<s.length; i++) {
+        hashmap.set(s[i], hashmap.has(s[i])?hashmap.get(s[i])+1 : 1)
+    }
+    for (let item of hashmap) {
+        if (item[1] % 2 === 0) {
+            ans += item[1]
+        }else {
+            ans += item[1]>1? (item[1]-1) : 0
+            flag = 1
+        }
+    }
+    return flag? ans + 1 : ans
+};
 ```
 
