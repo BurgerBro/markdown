@@ -342,3 +342,140 @@ var longestPalindrome = function(s) {
 };
 ```
 
+[859. 亲密字符串](https://leetcode.cn/problems/buddy-strings/)
+
+给你两个字符串 `s` 和 `goal` ，只要我们可以通过交换 `s` 中的两个字母得到与 `goal` 相等的结果，就返回 `true` ；否则返回 `false` 。
+
+交换字母的定义是：取两个下标 `i` 和 `j` （下标从 `0` 开始）且满足 `i != j` ，接着交换 `s[i]` 和 `s[j]` 处的字符。
+
+- 例如，在 `"abcd"` 中交换下标 `0` 和下标 `2` 的元素可以生成 `"cbad"` 。
+
+ 
+
+**示例 1：**
+
+```
+输入：s = "ab", goal = "ba"
+输出：true
+解释：你可以交换 s[0] = 'a' 和 s[1] = 'b' 生成 "ba"，此时 s 和 goal 相等。
+```
+
+**示例 2：**
+
+```
+输入：s = "ab", goal = "ab"
+输出：false
+解释：你只能交换 s[0] = 'a' 和 s[1] = 'b' 生成 "ba"，此时 s 和 goal 不相等。
+```
+
+**示例 3：**
+
+```
+输入：s = "aa", goal = "aa"
+输出：true
+解释：你可以交换 s[0] = 'a' 和 s[1] = 'a' 生成 "aa"，此时 s 和 goal 相等。
+```
+
+ 
+
+**提示：**
+
+- `1 <= s.length, goal.length <= 2 * 104`
+- `s` 和 `goal` 由小写英文字母组成
+
+```javascript
+/**
+ * @param {string} s
+ * @param {string} goal
+ * @return {boolean}
+ */
+var buddyStrings = function(s, goal) {
+    if (s.length<2 || s.length !== goal.length) return false
+    let i = 0
+    let diffCount = 0
+    let charSMap = new Map()
+    let charGoalMap = new Map()
+    while (i < s.length) {
+        charSMap.get(s[i])? charSMap.set(s[i], charSMap.get(s[i])+1) :  charSMap.set(s[i], 1)
+        charGoalMap.get(goal[i])? charGoalMap.set(goal[i], charGoalMap.get(goal[i])+1) :  charGoalMap.set(goal[i], 1)
+        s[i] !== goal[i]? diffCount++ : 0
+        if(diffCount > 2) return false
+        i++
+    }
+    for (const [key, value] of charSMap) {
+        if (!charGoalMap.has(key) || charGoalMap.get(key) !== value) {
+            return false;
+        }
+    }
+    if (diffCount === 1) return false
+    if (s === goal) {
+        let flag = 0
+        charSMap.forEach((item)=> {
+            if (item>1) flag = 1
+        })
+        if (flag === 0) return false
+    }
+    return true
+};
+```
+
+[14. 最长公共前缀](https://leetcode.cn/problems/longest-common-prefix/)
+
+编写一个函数来查找字符串数组中的最长公共前缀。
+
+如果不存在公共前缀，返回空字符串 `""`。
+
+ 
+
+**示例 1：**
+
+```
+输入：strs = ["flower","flow","flight"]
+输出："fl"
+```
+
+**示例 2：**
+
+```
+输入：strs = ["dog","racecar","car"]
+输出：""
+解释：输入不存在公共前缀。
+```
+
+ 
+
+**提示：**
+
+- `1 <= strs.length <= 200`
+- `0 <= strs[i].length <= 200`
+- `strs[i]` 仅由小写英文字母组成
+
+```javascript
+/**
+ * @param {string[]} strs
+ * @return {string}
+ */
+var longestCommonPrefix = function(strs) {
+    if (strs.length === 0) return ""
+    function isCommonPrefix(length) {
+        return strs.every(str => str.startsWith(strs[0].substring(0,length)))
+    }
+    let minLen = strs[0].length
+    for (let str of strs) {
+        if (str.length< minLen) {
+            minLen = str.length
+        }
+    }
+    let low = 0, high = minLen
+    while (low <high) {
+        mid = Math.floor((low + high + 1)/2)
+        if (isCommonPrefix(mid)) {
+            low = mid
+        } else {
+            high = mid - 1
+        }
+    }
+    return strs[0].substring(0,low)
+};
+```
+
