@@ -868,3 +868,121 @@ var merge = function(nums1, m, nums2, n) {
 };
 ```
 
+
+
+[594. 最长和谐子序列](https://leetcode.cn/problems/longest-harmonious-subsequence/)
+
+和谐数组是指一个数组里元素的最大值和最小值之间的差别 **正好是 `1`** 。
+
+现在，给你一个整数数组 `nums` ，请你在所有可能的子序列中找到最长的和谐子序列的长度。
+
+数组的子序列是一个由数组派生出来的序列，它可以通过删除一些元素或不删除元素、且不改变其余元素的顺序而得到。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [1,3,2,2,5,2,3,7]
+输出：5
+解释：最长的和谐子序列是 [3,2,2,2,3]
+```
+
+**示例 2：**
+
+```
+输入：nums = [1,2,3,4]
+输出：2
+```
+
+**示例 3：**
+
+```
+输入：nums = [1,1,1,1]
+输出：0
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums.length <= 2 * 104`
+- `-109 <= nums[i] <= 109`
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var findLHS = function(nums) {
+    nums = nums.sort((a,b)=> a-b)
+    let begin = 0
+    let res = 0
+    for (let end = 0; end < nums.length; end++) {
+        while (nums[end]-nums[begin]>1) {
+            begin++
+        }
+        if (nums[end]-nums[begin] === 1) {
+            res = Math.max(res, end-begin+1)
+        }
+    }
+    return res
+};
+```
+
+
+
+[643. 子数组最大平均数 I](https://leetcode.cn/problems/maximum-average-subarray-i/)
+
+给你一个由 `n` 个元素组成的整数数组 `nums` 和一个整数 `k` 。
+
+请你找出平均数最大且 **长度为 `k`** 的连续子数组，并输出该最大平均数。
+
+任何误差小于 `10-5` 的答案都将被视为正确答案。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [1,12,-5,-6,50,3], k = 4
+输出：12.75
+解释：最大平均数 (12-5-6+50)/4 = 51/4 = 12.75
+```
+
+**示例 2：**
+
+```
+输入：nums = [5], k = 1
+输出：5.00000
+```
+
+ 
+
+**提示：**
+
+- `n == nums.length`
+- `1 <= k <= n <= 105`
+- `-104 <= nums[i] <= 104`
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var findMaxAverage = function(nums, k) {
+    const l = nums.length
+    let sum = 0;
+    for (let i=0;i<k;i++) {
+        sum += nums[i]
+    }
+    let res = sum
+    for (let j = k; j<l; j++) {
+        sum = sum - nums[j-k] + nums[j]
+        res = Math.max(res, sum)
+    }
+    return res /k
+};
+```
+
