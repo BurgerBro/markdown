@@ -1,7 +1,3 @@
-
-
-
-
 OD算法练习
 
 以下为leetcode od算法题考点
@@ -984,5 +980,154 @@ var findMaxAverage = function(nums, k) {
     }
     return res /k
 };
+```
+
+[463. 岛屿的周长](https://leetcode.cn/problems/island-perimeter/)
+
+给定一个 `row x col` 的二维网格地图 `grid` ，其中：`grid[i][j] = 1` 表示陆地， `grid[i][j] = 0` 表示水域。
+
+网格中的格子 **水平和垂直** 方向相连（对角线方向不相连）。整个网格被水完全包围，但其中恰好有一个岛屿（或者说，一个或多个表示陆地的格子相连组成的岛屿）。
+
+岛屿中没有“湖”（“湖” 指水域在岛屿内部且不和岛屿周围的水相连）。格子是边长为 1 的正方形。网格为长方形，且宽度和高度均不超过 100 。计算这个岛屿的周长。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/island.png)
+
+```
+输入：grid = [[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]]
+输出：16
+解释：它的周长是上面图片中的 16 个黄色的边
+```
+
+**示例 2：**
+
+```
+输入：grid = [[1]]
+输出：4
+```
+
+**示例 3：**
+
+```
+输入：grid = [[1,0]]
+输出：4
+```
+
+ 
+
+**提示：**
+
+- `row == grid.length`
+- `col == grid[i].length`
+- `1 <= row, col <= 100`
+- `grid[i][j]` 为 `0` 或 `1`
+
+```javascript
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var islandPerimeter = function(grid) {
+    const dfs = (i, j) => {
+        if (i<0 || j< 0 || i >= grid.length || j >= grid[0].length) {
+            return 1
+        }
+        else if (grid[i][j] === 0) {
+            return 1
+        }
+        else if (grid[i][j] === 2) {
+            return 0
+        }
+        grid[i][j] = 2
+        return dfs(i-1,j) + dfs(i+1,j) + dfs(i,j-1) + dfs(i,j+1)
+    }
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[0].length; j++) {
+            if (grid[i][j] == 1) {
+            return dfs(i, j);   // dfs的入口
+            }
+        }
+    }
+  return 0
+};
+```
+
+[234. 回文链表](https://leetcode.cn/problems/palindrome-linked-list/)
+
+给你一个单链表的头节点 `head` ，请你判断该链表是否为回文链表。如果是，返回 `true` ；否则，返回 `false` 。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2021/03/03/pal1linked-list.jpg)
+
+```
+输入：head = [1,2,2,1]
+输出：true
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2021/03/03/pal2linked-list.jpg)
+
+```
+输入：head = [1,2]
+输出：false
+```
+
+ 
+
+**提示：**
+
+- 链表中节点数目在范围`[1, 105]` 内
+- `0 <= Node.val <= 9`
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var isPalindrome = function(head) {
+    if (head === null || head.next === null) {
+        return true
+    }
+    let fast = head
+    let slow = head
+    let prev
+    while(fast && fast.next) {
+        prev = slow
+        slow = slow.next
+        fast = fast.next.next
+    }
+    prev.next = null
+    // 反转链表
+    let head2 = null
+    while (slow) {
+        const tmp = slow.next
+        slow.next = head2
+        head2 = slow
+        slow = tmp
+    }
+    while (head && head2) {
+        if (head.val !== head2.val) {
+            return false
+        }
+        head = head.next
+        head2 = head2.next
+    }
+    return true
+};
+
 ```
 
