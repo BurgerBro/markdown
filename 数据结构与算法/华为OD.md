@@ -28,7 +28,7 @@ OD算法练习
 >
 > 字符串，中等 **468，692，151，686**，1764
 >
-> 数组，中等56，229，347
+> 数组，中等56，**229**，347
 >
 > 链表，中等**24**
 >
@@ -1640,6 +1640,126 @@ var majorityElement = function(nums) {
     map.forEach((value, key)=>{
         if (value>(nums.length/3)) res.push(key)
     })
+    return res
+};
+```
+
+[438. 找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/)
+
+定两个字符串 `s` 和 `p`，找到 `s` 中所有 `p` 的 **异位词** 的子串，返回这些子串的起始索引。不考虑答案输出的顺序。
+
+**异位词** 指由相同字母重排列形成的字符串（包括相同的字符串）。
+
+ 
+
+**示例 1:**
+
+```
+输入: s = "cbaebabacd", p = "abc"
+输出: [0,6]
+解释:
+起始索引等于 0 的子串是 "cba", 它是 "abc" 的异位词。
+起始索引等于 6 的子串是 "bac", 它是 "abc" 的异位词。
+```
+
+ **示例 2:**
+
+```
+输入: s = "abab", p = "ab"
+输出: [0,1,2]
+解释:
+起始索引等于 0 的子串是 "ab", 它是 "ab" 的异位词。
+起始索引等于 1 的子串是 "ba", 它是 "ab" 的异位词。
+起始索引等于 2 的子串是 "ab", 它是 "ab" 的异位词。
+```
+
+ 
+
+**提示:**
+
+- `1 <= s.length, p.length <= 3 * 104`
+- `s` 和 `p` 仅包含小写字母
+
+```javascript
+/**
+ * @param {string} s
+ * @param {string} p
+ * @return {number[]}
+ */
+var findAnagrams = function(s, p) {
+    const l = p.length
+    if (s.length<l) return []
+    const pMap = new Map()
+    const sMap = new Map()
+    for (let j=0; j<l; j++) {
+        pMap.set(p[j], pMap.has(p[j])?pMap.get(p[j])+1: 1)
+        sMap.set(s[j], sMap.has(s[j])?sMap.get(s[j])+1: 1)
+    }
+    function cmpMap(mapA, mapB) {
+        for (const [key, value] of mapA) {
+            if (!mapB.has(key) || mapB.get(key) !== value) {
+                return false
+            }
+        }
+        return true
+    }
+    const ans = []
+    if (cmpMap(pMap, sMap)) ans.push(0)
+    for(let i=0; i<s.length-l; i++) {
+        if (sMap.get(s[i]==1)) sMap.delete(s[i])
+        else sMap.set(s[i],sMap.get(s[i])-1)
+        sMap.set(s[i+l], sMap.has(s[i+l])?sMap.get(s[i+l])+1:1)
+        if (cmpMap(pMap, sMap)) ans.push(i+1)        
+    }
+    return ans
+};
+```
+
+[347. 前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/)
+
+给你一个整数数组 `nums` 和一个整数 `k` ，请你返回其中出现频率前 `k` 高的元素。你可以按 **任意顺序** 返回答案。
+
+ 
+
+**示例 1:**
+
+```
+输入: nums = [1,1,1,2,2,3], k = 2
+输出: [1,2]
+```
+
+**示例 2:**
+
+```
+输入: nums = [1], k = 1
+输出: [1]
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums.length <= 105`
+- `k` 的取值范围是 `[1, 数组中不相同的元素的个数]`
+- 题目数据保证答案唯一，换句话说，数组中前 `k` 个高频元素的集合是唯一的
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number[]}
+ */
+var topKFrequent = function(nums, k) {
+    let map = new Map()
+    let res = []
+    for (let i = 0; i < nums.length; i++) {
+        map.set(nums[i],map.has(nums[i])?map.get(nums[i])+1:1)
+    }
+    // map转二维数组进行排序
+    let sortArray = Array.from(map).sort((a,b)=> b[1]-a[1])
+    for (let i =0; i< k; i++ ){
+        res.push(sortArray[i][0])
+    }
     return res
 };
 ```
