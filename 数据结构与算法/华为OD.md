@@ -2,7 +2,7 @@ OD算法练习
 
 以下为leetcode od算法题考点
 
-> 字符串：3，49，30
+> 字符串：**3**，49，30
 > 线性表：86，16，27，732
 > 队列：641，406，899
 > 栈：946，116，117，895
@@ -28,7 +28,7 @@ OD算法练习
 >
 > 字符串，中等 **468，692，151，686**，1764
 >
-> 数组，中等56，**229**，347
+> 数组，中等56，**229**，**347**
 >
 > 链表，中等**24**
 >
@@ -59,6 +59,11 @@ OD算法练习
 ## 第一阶段
 
 ### 字符串
+
+> - 双指针
+> - 快慢指针
+> - KMP
+> - 滑动窗口
 
 [1154. 一年中的第几天](https://leetcode.cn/problems/day-of-the-year/)
 
@@ -1761,6 +1766,126 @@ var topKFrequent = function(nums, k) {
         res.push(sortArray[i][0])
     }
     return res
+};
+```
+
+[3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
+
+给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长子串** 的长度。
+
+ 
+
+**示例 1:**
+
+```
+输入: s = "abcabcbb"
+输出: 3 
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+```
+
+**示例 2:**
+
+```
+输入: s = "bbbbb"
+输出: 1
+解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+```
+
+**示例 3:**
+
+```
+输入: s = "pwwkew"
+输出: 3
+解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+```
+
+ 
+
+**提示：**
+
+- `0 <= s.length <= 5 * 104`
+- `s` 由英文字母、数字、符号和空格组成
+
+```javascript
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var lengthOfLongestSubstring = function(s) {
+    if (s.length<=1) return s.length
+    let left = 0 
+    let right = 1
+    let ans = 0
+    let temp
+    while(right<s.length) {
+        temp = s.slice(left,right)
+        if (temp.indexOf(s[right])>-1) {
+            left++
+            continue
+        }
+        else {
+            right++
+        }
+        ans = Math.max(ans, right-left)
+    }
+    return ans
+};
+```
+
+[49. 字母异位词分组](https://leetcode.cn/problems/group-anagrams/)
+
+给你一个字符串数组，请你将 **字母异位词** 组合在一起。可以按任意顺序返回结果列表。
+
+**字母异位词** 是由重新排列源单词的所有字母得到的一个新单词。
+
+ 
+
+**示例 1:**
+
+```
+输入: strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+输出: [["bat"],["nat","tan"],["ate","eat","tea"]]
+```
+
+**示例 2:**
+
+```
+输入: strs = [""]
+输出: [[""]]
+```
+
+**示例 3:**
+
+```
+输入: strs = ["a"]
+输出: [["a"]]
+```
+
+ 
+
+**提示：**
+
+- `1 <= strs.length <= 104`
+- `0 <= strs[i].length <= 100`
+- `strs[i]` 仅包含小写字母
+
+```javascript
+/**
+ * @param {string[]} strs
+ * @return {string[][]}
+ */
+var groupAnagrams = function(strs) {
+    let map = new Map()
+    let ans = []
+    strs.forEach((str)=> {
+        let temp = str.split('').sort().join('')
+        map.has(temp)?map.get(temp).push(str): map.set(temp,[str])
+    })
+    map.forEach(value=>{
+        ans.push(value)
+    })
+    return ans
 };
 ```
 
