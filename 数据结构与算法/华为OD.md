@@ -2,8 +2,8 @@ OD算法练习
 
 以下为leetcode od算法题考点
 
-> 字符串：**3**，49，30
-> 线性表：86，16，27，732
+> 字符串：**3**，**49**，30
+> 线性表：**86**，16，27，732
 > 队列：641，406，899
 > 栈：946，116，117，895
 > 哈希表：61，729，25，554
@@ -1885,6 +1885,157 @@ var groupAnagrams = function(strs) {
     map.forEach(value=>{
         ans.push(value)
     })
+    return ans
+};
+```
+
+[86. 分隔链表](https://leetcode.cn/problems/partition-list/)
+
+给你一个链表的头节点 `head` 和一个特定值 `x` ，请你对链表进行分隔，使得所有 **小于** `x` 的节点都出现在 **大于或等于** `x` 的节点之前。
+
+你应当 **保留** 两个分区中每个节点的初始相对位置。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2021/01/04/partition.jpg)
+
+```
+输入：head = [1,4,3,2,5,2], x = 3
+输出：[1,2,2,4,3,5]
+```
+
+**示例 2：**
+
+```
+输入：head = [2,1], x = 2
+输出：[1,2]
+```
+
+ 
+
+**提示：**
+
+- 链表中节点的数目在范围 `[0, 200]` 内
+- `-100 <= Node.val <= 100`
+- `-200 <= x <= 200`
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} x
+ * @return {ListNode}
+ */
+var partition = function(head, x) {
+    let small = new ListNode(0)
+    let smallHead = small
+    let large = new ListNode(0)
+    let largeHead = large
+    while(head) {
+        if (head.val<x) {
+            small.next = head
+            small = small.next
+         }
+        else{
+            large.next = head
+            large = large.next
+        }
+        head = head.next
+    }
+    large.next = null
+    small.next = largeHead.next
+    return smallHead.next
+};
+```
+
+[15. 三数之和](https://leetcode.cn/problems/3sum/)
+
+给你一个整数数组 `nums` ，判断是否存在三元组 `[nums[i], nums[j], nums[k]]` 满足 `i != j`、`i != k` 且 `j != k` ，同时还满足 `nums[i] + nums[j] + nums[k] == 0` 。请
+
+你返回所有和为 `0` 且不重复的三元组。
+
+**注意：**答案中不可以包含重复的三元组。
+
+ 
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [-1,0,1,2,-1,-4]
+输出：[[-1,-1,2],[-1,0,1]]
+解释：
+nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0 。
+nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0 。
+nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0 。
+不同的三元组是 [-1,0,1] 和 [-1,-1,2] 。
+注意，输出的顺序和三元组的顺序并不重要。
+```
+
+**示例 2：**
+
+```
+输入：nums = [0,1,1]
+输出：[]
+解释：唯一可能的三元组和不为 0 。
+```
+
+**示例 3：**
+
+```
+输入：nums = [0,0,0]
+输出：[[0,0,0]]
+解释：唯一可能的三元组和为 0 。
+```
+
+ 
+
+**提示：**
+
+- `3 <= nums.length <= 3000`
+- `-105 <= nums[i] <= 105`
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var threeSum = function(nums) {
+    let ans = []
+    const len = nums.length
+    if (len<3) return ans
+    nums.sort((a,b) => a-b)
+    for (let i = 0 ; i<len ; i ++) {
+        if (nums[i]>0) return ans
+        if (i>0&&nums[i] === nums[i-1]) continue
+        let l = i+1
+        let r = len-1
+        while(l<r) {
+            let sum = nums[i] + nums[l] + nums[r]
+            if (sum === 0) {
+                ans.push([nums[i],nums[l],nums[r]])
+                while(r>l&&nums[l] === nums[l+1]) l++
+                while(r>l&&nums[r] === nums[r-1]) r--
+                l++
+                r--
+            }
+            else if (sum<0) {
+                l++
+            }
+            else if (sum>0) {
+                r--
+            }
+        }
+    }
     return ans
 };
 ```
