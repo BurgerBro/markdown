@@ -3,7 +3,7 @@ OD算法练习
 以下为leetcode od算法题考点
 
 > 字符串：**3**，**49**，30
-> 线性表：**86**，16，27，732
+> 线性表：**86**，**16**，27，732
 > 队列：641，406，899
 > 栈：946，116，117，895
 > 哈希表：61，729，25，554
@@ -2038,5 +2038,70 @@ var threeSum = function(nums) {
     }
     return ans
 };
+```
+
+[16. 最接近的三数之和](https://leetcode.cn/problems/3sum-closest/)
+
+给你一个长度为 `n` 的整数数组 `nums` 和 一个目标值 `target`。请你从 `nums` 中选出三个整数，使它们的和与 `target` 最接近。
+
+返回这三个数的和。
+
+假定每组输入只存在恰好一个解。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [-1,2,1,-4], target = 1
+输出：2
+解释：与 target 最接近的和是 2 (-1 + 2 + 1 = 2) 。
+```
+
+**示例 2：**
+
+```
+输入：nums = [0,0,0], target = 1
+输出：0
+```
+
+ 
+
+**提示：**
+
+- `3 <= nums.length <= 1000`
+- `-1000 <= nums[i] <= 1000`
+- `-104 <= target <= 104`
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var threeSumClosest = function(nums, target) {
+    let N = nums.length
+    let res = Number.MAX_SAFE_INTEGER
+    nums.sort((a, b) => a - b)
+    for (let i = 0; i < N; i++) {
+        let left = i + 1
+        let right = N - 1
+        while (left < right) {
+            let sum = nums[i] + nums[left] + nums[right]
+            if (Math.abs(sum - target) < Math.abs(res - target)) {
+                res = sum
+            }
+            if (sum < target) {
+                left++
+            } else if (sum > target) {
+                right--
+            } else {
+                return sum
+            }
+        }
+    }
+    return res
+};
+
 ```
 
