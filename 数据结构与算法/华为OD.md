@@ -4,9 +4,9 @@ OD算法练习
 
 > 字符串：**3**，**49**，30
 > 线性表：**86**，**16**，**27**，732
-> 队列：641，406，899
+> 队列：641，**406**，899
 > 栈：946，116，117，895
-> 哈希表：61，729，25，554
+> 哈希表：**61**，**729**，25，554
 > dfs：105，112，98，494，547，1254
 > bfs：1091，1129，102，101，752
 >
@@ -2235,5 +2235,137 @@ var reconstructQueue = function(people) {
     return res;
 };
 
+```
+
+[61. 旋转链表](https://leetcode.cn/problems/rotate-list/)
+
+给你一个链表的头节点 `head` ，旋转链表，将链表每个节点向右移动 `k` 个位置。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/11/13/rotate1.jpg)
+
+```
+输入：head = [1,2,3,4,5], k = 2
+输出：[4,5,1,2,3]
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2020/11/13/roate2.jpg)
+
+```
+输入：head = [0,1,2], k = 4
+输出：[2,0,1]
+```
+
+ 
+
+**提示：**
+
+- 链表中节点的数目在范围 `[0, 500]` 内
+- `-100 <= Node.val <= 100`
+- `0 <= k <= 2 * 109`
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} k
+ * @return {ListNode}
+ */
+var rotateRight = function(head, k) {
+    if (k === 0 || !head || !head.next) return head
+    let originHead = head
+    let length = 1
+    while(head.next) {
+        head = head.next
+        length++
+    }
+    // 此时head指向末尾节点，连接成环
+    head.next = originHead
+    // 计算移动单位
+    k = length- k % length 
+    while (k--) {
+        head = head.next
+    }
+    originHead = head.next
+    head.next = null
+    return originHead
+};
+```
+
+[729. 我的日程安排表 I](https://leetcode.cn/problems/my-calendar-i/)
+
+实现一个 `MyCalendar` 类来存放你的日程安排。如果要添加的日程安排不会造成 **重复预订** ，则可以存储这个新的日程安排。
+
+当两个日程安排有一些时间上的交叉时（例如两个日程安排都在同一时间内），就会产生 **重复预订** 。
+
+日程可以用一对整数 `start` 和 `end` 表示，这里的时间是半开区间，即 `[start, end)`, 实数 `x` 的范围为，  `start <= x < end` 。
+
+实现 `MyCalendar` 类：
+
+- `MyCalendar()` 初始化日历对象。
+- `boolean book(int start, int end)` 如果可以将日程安排成功添加到日历中而不会导致重复预订，返回 `true` 。否则，返回 `false` 并且不要将该日程安排添加到日历中。
+
+ 
+
+**示例：**
+
+```
+输入：
+["MyCalendar", "book", "book", "book"]
+[[], [10, 20], [15, 25], [20, 30]]
+输出：
+[null, true, false, true]
+
+解释：
+MyCalendar myCalendar = new MyCalendar();
+myCalendar.book(10, 20); // return True
+myCalendar.book(15, 25); // return False ，这个日程安排不能添加到日历中，因为时间 15 已经被另一个日程安排预订了。
+myCalendar.book(20, 30); // return True ，这个日程安排可以添加到日历中，因为第一个日程安排预订的每个时间都小于 20 ，且不包含时间 20 。
+```
+
+ 
+
+**提示：**
+
+- `0 <= start < end <= 109`
+- 每个测试用例，调用 `book` 方法的次数最多不超过 `1000` 次。
+
+```javascript
+var MyCalendar = function() {
+    this.bookArr = []
+};
+
+/** 
+ * @param {number} start 
+ * @param {number} end
+ * @return {boolean}
+ */
+MyCalendar.prototype.book = function(start, end) {
+    for (let item of this.bookArr) {
+        let l = item[0], r = item[1]
+        if (l<end && r>start) {
+            return false
+        }
+    }
+    this.bookArr.push([start, end])
+    return true
+};
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * var obj = new MyCalendar()
+ * var param_1 = obj.book(start,end)
+ */
 ```
 
