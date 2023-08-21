@@ -5,7 +5,7 @@ OD算法练习
 > 字符串：**3**，**49**，30
 > 线性表：**86**，**16**，**27**，732
 > 队列：641，**406**，899
-> 栈：946，116，117，895
+> 栈：**946**，116，117，895
 > 哈希表：**61**，**729**，25，554
 > dfs：105，112，98，494，547，1254
 > bfs：1091，1129，102，101，752
@@ -2367,5 +2367,69 @@ MyCalendar.prototype.book = function(start, end) {
  * var obj = new MyCalendar()
  * var param_1 = obj.book(start,end)
  */
+```
+
+[946. 验证栈序列](https://leetcode.cn/problems/validate-stack-sequences/)
+
+给定 `pushed` 和 `popped` 两个序列，每个序列中的 **值都不重复**，只有当它们可能是在最初空栈上进行的推入 push 和弹出 pop 操作序列的结果时，返回 `true`；否则，返回 `false` 。
+
+ 
+
+**示例 1：**
+
+```
+输入：pushed = [1,2,3,4,5], popped = [4,5,3,2,1]
+输出：true
+解释：我们可以按以下顺序执行：
+push(1), push(2), push(3), push(4), pop() -> 4,
+push(5), pop() -> 5, pop() -> 3, pop() -> 2, pop() -> 1
+```
+
+**示例 2：**
+
+```
+输入：pushed = [1,2,3,4,5], popped = [4,3,5,1,2]
+输出：false
+解释：1 不能在 2 之前弹出。
+```
+
+ 
+
+**提示：**
+
+- `1 <= pushed.length <= 1000`
+- `0 <= pushed[i] <= 1000`
+- `pushed` 的所有元素 **互不相同**
+- `popped.length == pushed.length`
+- `popped` 是 `pushed` 的一个排列
+
+```javascript
+/**
+ * @param {number[]} pushed
+ * @param {number[]} popped
+ * @return {boolean}
+ */
+var validateStackSequences = function(pushed, popped) {
+     const stack = []
+     const n = pushed.length
+     for (let i=0, j=0; i<n; i++) {
+          stack.push(pushed[i])
+          while(stack.length && stack[stack.length-1] == popped[j]) {
+              stack.pop()
+              j++
+          }
+     }
+     return stack.length===0
+};
+```
+
+### JS中树定义
+
+```javascript
+function treeNode(val, left, right) {
+	this.val = (val===undefined? 0 : val)
+	this.left = (left===undefined? null: left)
+    this.right = (right===undefined? null: right)
+}
 ```
 
