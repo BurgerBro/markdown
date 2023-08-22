@@ -2433,3 +2433,405 @@ function treeNode(val, left, right) {
 }
 ```
 
+[102. 二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/)
+
+给你二叉树的根节点 `root` ，返回其节点值的 **层序遍历** 。 （即逐层地，从左到右访问所有节点）。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2021/02/19/tree1.jpg)
+
+```
+输入：root = [3,9,20,null,null,15,7]
+输出：[[3],[9,20],[15,7]]
+```
+
+**示例 2：**
+
+```
+输入：root = [1]
+输出：[[1]]
+```
+
+**示例 3：**
+
+```
+输入：root = []
+输出：[]
+```
+
+ 
+
+**提示：**
+
+- 树中节点数目在范围 `[0, 2000]` 内
+- `-1000 <= Node.val <= 1000`
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[][]}
+ */
+var levelOrder = function(root) {
+    const ans = []
+    const queue = [root]
+    if (!root) return ans
+    while(queue.length) {
+        const len = queue.length
+        const curLevel = []
+        for (let i=0; i<len; i++) {
+            const node = queue.shift()
+            curLevel.push(node.val)
+            node.left && queue.push(node.left)
+            node.right && queue.push(node.right)
+        }
+        ans.push(curLevel)
+    }
+    return ans
+};
+```
+
+[199. 二叉树的右视图](https://leetcode.cn/problems/binary-tree-right-side-view/)
+
+给定一个二叉树的 **根节点** `root`，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
+
+ 
+
+**示例 1:**
+
+![img](https://assets.leetcode.com/uploads/2021/02/14/tree.jpg)
+
+```
+输入: [1,2,3,null,5,null,4]
+输出: [1,3,4]
+```
+
+**示例 2:**
+
+```
+输入: [1,null,3]
+输出: [1,3]
+```
+
+**示例 3:**
+
+```
+输入: []
+输出: []
+```
+
+ 
+
+**提示:**
+
+- 二叉树的节点个数的范围是 `[0,100]`
+- `-100 <= Node.val <= 100` 
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var rightSideView = function(root) {
+    const ans = []
+    const queue = [root]
+    while(queue.length && root) {
+        let len = queue.length
+        while (len--) {
+            const node = queue.shift()
+            if (len === 0) ans.push(node.val)
+            node.left&&queue.push(node.left)
+            node.right&&queue.push(node.right)
+        }
+    }
+    return ans
+};
+```
+
+[637. 二叉树的层平均值](https://leetcode.cn/problems/average-of-levels-in-binary-tree/)
+
+给定一个非空二叉树的根节点 `root` , 以数组的形式返回每一层节点的平均值。与实际答案相差 `10-5` 以内的答案可以被接受。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2021/03/09/avg1-tree.jpg)
+
+```
+输入：root = [3,9,20,null,null,15,7]
+输出：[3.00000,14.50000,11.00000]
+解释：第 0 层的平均值为 3,第 1 层的平均值为 14.5,第 2 层的平均值为 11 。
+因此返回 [3, 14.5, 11] 。
+```
+
+**示例 2:**
+
+![img](https://assets.leetcode.com/uploads/2021/03/09/avg2-tree.jpg)
+
+```
+输入：root = [3,9,20,15,7]
+输出：[3.00000,14.50000,11.00000]
+```
+
+ 
+
+**提示：**
+
+
+
+- 树中节点数量在 `[1, 104]` 范围内
+- `-231 <= Node.val <= 231 - 1`
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var averageOfLevels = function(root) {
+    const ans = []
+    const queue = [root]
+    while(queue.length && root) {
+        let len = queue.length
+        const LEN = len
+        let sum = 0
+        while(len--) {
+            const node = queue.shift()
+            sum += node.val
+            node.left&&queue.push(node.left)
+            node.right&&queue.push(node.right)
+        }
+        ans.push(sum/LEN)
+    }
+    return ans
+};
+```
+
+[429. N 叉树的层序遍历](https://leetcode.cn/problems/n-ary-tree-level-order-traversal/)
+
+给定一个 N 叉树，返回其节点值的*层序遍历*。（即从左到右，逐层遍历）。
+
+树的序列化输入是用层序遍历，每组子节点都由 null 值分隔（参见示例）。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2018/10/12/narytreeexample.png)
+
+```
+输入：root = [1,null,3,2,4,null,5,6]
+输出：[[1],[3,2,4],[5,6]]
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2019/11/08/sample_4_964.png)
+
+```
+输入：root = [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14]
+输出：[[1],[2,3,4,5],[6,7,8,9,10],[11,12,13],[14]]
+```
+
+ 
+
+**提示：**
+
+- 树的高度不会超过 `1000`
+- 树的节点总数在 `[0, 10^4]` 之间
+
+```javascript
+/**
+ * // Definition for a Node.
+ * function Node(val,children) {
+ *    this.val = val;
+ *    this.children = children;
+ * };
+ */
+
+/**
+ * @param {Node|null} root
+ * @return {number[][]}
+ */
+var levelOrder = function(root) {
+    const ans = []
+    const queue = [root]
+    while (queue.length&&root){
+        const curLevel = []
+        let len = queue.length
+        while(len--){
+            const node = queue.shift()
+            curLevel.push(node.val)
+            for (let item of node.children) {
+                queue.push(item)
+            }
+        }
+        ans.push(curLevel)
+    }
+    return ans
+};
+```
+
+[515. 在每个树行中找最大值](https://leetcode.cn/problems/find-largest-value-in-each-tree-row/)
+
+给定一棵二叉树的根节点 `root` ，请找出该二叉树中每一层的最大值。
+
+ 
+
+**示例1：**
+
+![img](https://assets.leetcode.com/uploads/2020/08/21/largest_e1.jpg)
+
+```
+输入: root = [1,3,2,5,3,null,9]
+输出: [1,3,9]
+```
+
+**示例2：**
+
+```
+输入: root = [1,2,3]
+输出: [1,3]
+```
+
+ 
+
+**提示：**
+
+- 二叉树的节点个数的范围是 `[0,104]`
+- `-231 <= Node.val <= 231 - 1`
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var largestValues = function(root) {
+    //使用层序遍历
+    let res=[],queue=[];
+    queue.push(root);
+    while(root!==null&&queue.length){
+        //设置max初始值就是队列的第一个元素
+        let max=queue[0].val;
+        let len=queue.length;
+        while(len--) {
+            let node = queue.shift()
+            max=max>node.val?max:node.val
+            node.left&&queue.push(node.left)
+            node.right&&queue.push(node.right)
+        }
+        res.push(max);
+    }
+    return res;
+};
+```
+
+[116. 填充每个节点的下一个右侧节点指针](https://leetcode.cn/problems/populating-next-right-pointers-in-each-node/)
+
+给定一个 **完美二叉树** ，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：
+
+```
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+```
+
+填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 `NULL`。
+
+初始状态下，所有 next 指针都被设置为 `NULL`。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2019/02/14/116_sample.png)
+
+```
+输入：root = [1,2,3,4,5,6,7]
+输出：[1,#,2,3,#,4,5,6,7,#]
+解释：给定二叉树如图 A 所示，你的函数应该填充它的每个 next 指针，以指向其下一个右侧节点，如图 B 所示。序列化的输出按层序遍历排列，同一层节点由 next 指针连接，'#' 标志着每一层的结束。
+```
+
+
+
+**示例 2:**
+
+```
+输入：root = []
+输出：[]
+```
+
+ 
+
+**提示：**
+
+- 树中节点的数量在 `[0, 212 - 1]` 范围内
+- `-1000 <= node.val <= 1000`
+
+```javascript
+/**
+ * // Definition for a Node.
+ * function Node(val, left, right, next) {
+ *    this.val = val === undefined ? null : val;
+ *    this.left = left === undefined ? null : left;
+ *    this.right = right === undefined ? null : right;
+ *    this.next = next === undefined ? null : next;
+ * };
+ */
+
+/**
+ * @param {Node} root
+ * @return {Node}
+ */
+var connect = function(root) {
+    const queue = [root]
+    while(queue.length&&root) {
+        let len = queue.length
+        while(len--){
+            const node = queue.shift()
+            if (len!==0) node.next = queue[0]
+            node.left&&queue.push(node.left)
+            node.right&&queue.push(node.right)
+        }
+    }
+    return root
+};
+```
+
