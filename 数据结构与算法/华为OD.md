@@ -3273,3 +3273,409 @@ var searchRange = function(nums, target) {
 };
 ```
 
+[283. 移动零](https://leetcode.cn/problems/move-zeroes/)
+
+给定一个数组 `nums`，编写一个函数将所有 `0` 移动到数组的末尾，同时保持非零元素的相对顺序。
+
+**请注意** ，必须在不复制数组的情况下原地对数组进行操作。
+
+ 
+
+**示例 1:**
+
+```
+输入: nums = [0,1,0,3,12]
+输出: [1,3,12,0,0]
+```
+
+**示例 2:**
+
+```
+输入: nums = [0]
+输出: [0]
+```
+
+ 
+
+**提示**:
+
+- `1 <= nums.length <= 104`
+- `-231 <= nums[i] <= 231 - 1`
+
+ 
+
+**进阶：**你能尽量减少完成的操作次数吗？
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var moveZeroes = function(nums) {
+    let slow = 0, fast = 0
+    while(fast!==nums.length) {
+        if (nums[fast]!==0) {
+            const temp = nums[slow]
+            nums[slow] = nums[fast]
+            nums[fast] = temp
+            slow++
+        }
+        fast++
+    }
+};
+```
+
+[26. 删除有序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/)
+
+给你一个 **升序排列** 的数组 `nums` ，请你**[ 原地](http://baike.baidu.com/item/原地算法)** 删除重复出现的元素，使每个元素 **只出现一次** ，返回删除后数组的新长度。元素的 **相对顺序** 应该保持 **一致** 。然后返回 `nums` 中唯一元素的个数。
+
+考虑 `nums` 的唯一元素的数量为 `k` ，你需要做以下事情确保你的题解可以被通过：
+
+- 更改数组 `nums` ，使 `nums` 的前 `k` 个元素包含唯一元素，并按照它们最初在 `nums` 中出现的顺序排列。`nums` 的其余元素与 `nums` 的大小不重要。
+- 返回 `k` 。
+
+**判题标准:**
+
+系统会用下面的代码来测试你的题解:
+
+```
+int[] nums = [...]; // 输入数组
+int[] expectedNums = [...]; // 长度正确的期望答案
+
+int k = removeDuplicates(nums); // 调用
+
+assert k == expectedNums.length;
+for (int i = 0; i < k; i++) {
+    assert nums[i] == expectedNums[i];
+}
+```
+
+如果所有断言都通过，那么您的题解将被 **通过**。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [1,1,2]
+输出：2, nums = [1,2,_]
+解释：函数应该返回新的长度 2 ，并且原数组 nums 的前两个元素被修改为 1, 2 。不需要考虑数组中超出新长度后面的元素。
+```
+
+**示例 2：**
+
+```
+输入：nums = [0,0,1,1,1,2,2,3,3,4]
+输出：5, nums = [0,1,2,3,4]
+解释：函数应该返回新的长度 5 ， 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4 。不需要考虑数组中超出新长度后面的元素。
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums.length <= 3 * 104`
+- `-104 <= nums[i] <= 104`
+- `nums` 已按 **升序** 排列
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var removeDuplicates = function(nums) {
+    if (nums.length==0) return 0
+    let slow = 1, fast = 1
+    while(fast<nums.length){
+        if (nums[fast]!==nums[fast-1]) {
+            nums[slow] = nums[fast]
+            slow++
+        }
+        fast++
+    }
+    return slow
+};
+```
+
+[844. 比较含退格的字符串](https://leetcode.cn/problems/backspace-string-compare/)
+
+给定 `s` 和 `t` 两个字符串，当它们分别被输入到空白的文本编辑器后，如果两者相等，返回 `true` 。`#` 代表退格字符。
+
+**注意：**如果对空文本输入退格字符，文本继续为空。
+
+ 
+
+**示例 1：**
+
+```
+输入：s = "ab#c", t = "ad#c"
+输出：true
+解释：s 和 t 都会变成 "ac"。
+```
+
+**示例 2：**
+
+```
+输入：s = "ab##", t = "c#d#"
+输出：true
+解释：s 和 t 都会变成 ""。
+```
+
+**示例 3：**
+
+```
+输入：s = "a#c", t = "b"
+输出：false
+解释：s 会变成 "c"，但 t 仍然是 "b"。
+```
+
+ 
+
+**提示：**
+
+- `1 <= s.length, t.length <= 200`
+- `s` 和 `t` 只含有小写字母以及字符 `'#'`
+
+ 
+
+**进阶：**
+
+- 你可以用 `O(n)` 的时间复杂度和 `O(1)` 的空间复杂度解决该问题吗？
+
+```javascript
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+var backspaceCompare = function(s, t) {
+    let skipS = 0, skipT = 0, i=s.length-1, j = t.length-1
+    while(i>=0||j>=0){
+        while(i>=0){
+            if (s[i]==='#') {
+                skipS++
+                i--
+            } else if(skipS>0) {
+                skipS--
+                i--
+            } else break
+        }
+        while(j>=0){
+            if (t[j]==='#') {
+                skipT++
+                j--
+            } else if(skipT>0) {
+                skipT--
+                j--
+            } else break
+        }
+        if(s[i]!==t[j]) return false
+        i--
+        j--
+    }
+    return true
+};
+```
+
+#### [209. 长度最小的子数组](https://leetcode.cn/problems/minimum-size-subarray-sum/)
+
+给定一个含有 `n` 个正整数的数组和一个正整数 `target` **。**
+
+找出该数组中满足其和 `≥ target` 的长度最小的 **连续子数组** `[numsl, numsl+1, ..., numsr-1, numsr]` ，并返回其长度**。**如果不存在符合条件的子数组，返回 `0` 。
+
+ 
+
+**示例 1：**
+
+```
+输入：target = 7, nums = [2,3,1,2,4,3]
+输出：2
+解释：子数组 [4,3] 是该条件下的长度最小的子数组。
+```
+
+**示例 2：**
+
+```
+输入：target = 4, nums = [1,4,4]
+输出：1
+```
+
+**示例 3：**
+
+```
+输入：target = 11, nums = [1,1,1,1,1,1,1,1]
+输出：0
+```
+
+ 
+
+**提示：**
+
+- `1 <= target <= 109`
+- `1 <= nums.length <= 105`
+- `1 <= nums[i] <= 105`
+
+```javascript
+/**
+ * @param {number} target
+ * @param {number[]} nums
+ * @return {number}
+ */
+var minSubArrayLen = function(target, nums) {
+    let min = 0
+    let sum = 0
+    // 滑动窗口
+    for (let i = 0, j= 0; i<nums.length; i++) {
+        sum += nums[i]
+        while(sum>=target){
+            if (!min) min = (i-j+1)
+            else min = min<(i-j+1)? min: (i-j+1)
+            sum-=nums[j++]
+        }
+    }
+    return min
+};
+```
+
+#### [59. 螺旋矩阵 II](https://leetcode.cn/problems/spiral-matrix-ii/)
+
+给你一个正整数 `n` ，生成一个包含 `1` 到 `n2` 所有元素，且元素按顺时针顺序螺旋排列的 `n x n` 正方形矩阵 `matrix` 。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/11/13/spiraln.jpg)
+
+```
+输入：n = 3
+输出：[[1,2,3],[8,9,4],[7,6,5]]
+```
+
+**示例 2：**
+
+```
+输入：n = 1
+输出：[[1]]
+```
+
+ 
+
+**提示：**
+
+- `1 <= n <= 20`
+
+```javascript
+/**
+ * @param {number} n
+ * @return {number[][]}
+ */
+var generateMatrix = function(n) {
+    let startX = 0, startY = 0, count = 1, loop = Math.floor(n/2)
+    let mid = loop, res = new Array(n).fill(0).map(() => new Array(n).fill(0)),offset = 1
+    while(loop--){
+        let col = startX, row = startY
+        // 上边
+        while(col<startY+n-offset) {
+            res[row][col] = count++
+            col++
+        }
+        // 右边
+        while(row<startX+n-offset) {
+            res[row][col] = count++
+            row++
+        }
+        // 下边
+        while(col>startY) {
+            res[row][col] = count++
+            col--
+        }
+        // 左边
+        while(row>startX) {
+            res[row][col] = count++
+            row--
+        }
+        startX++
+        startY++
+        offset+=2
+    }
+    if (n%2!==0) {
+        res[mid][mid] = count
+    }
+    return res
+};
+```
+
+### 动态规划
+
+> **解题步骤**：
+>
+> 1. 确定dp数组及其下标含义
+> 2. 确定递推公式
+> 3. dp数组初始化
+> 4. 确定遍历顺序
+> 5. 举例推导dp数组
+
+#### [509. 斐波那契数](https://leetcode.cn/problems/fibonacci-number/)
+
+**斐波那契数** （通常用 `F(n)` 表示）形成的序列称为 **斐波那契数列** 。该数列由 `0` 和 `1` 开始，后面的每一项数字都是前面两项数字的和。也就是：
+
+```
+F(0) = 0，F(1) = 1
+F(n) = F(n - 1) + F(n - 2)，其中 n > 1
+```
+
+给定 `n` ，请计算 `F(n)` 。
+
+ 
+
+**示例 1：**
+
+```
+输入：n = 2
+输出：1
+解释：F(2) = F(1) + F(0) = 1 + 0 = 1
+```
+
+**示例 2：**
+
+```
+输入：n = 3
+输出：2
+解释：F(3) = F(2) + F(1) = 1 + 1 = 2
+```
+
+**示例 3：**
+
+```
+输入：n = 4
+输出：3
+解释：F(4) = F(3) + F(2) = 2 + 1 = 3
+```
+
+ 
+
+**提示：**
+
+- `0 <= n <= 30`
+
+```javascript
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var fib = function(n) {
+    let pre1 = 1
+    let pre2 = 0
+    let temp
+    if (n === 0) return 0
+    if (n === 1) return 1
+    for (let i = 2; i<=n; i++) {
+        temp = pre1
+        pre1 = pre1 + pre2
+        pre2 = temp
+    }
+    return pre1
+};
+```
+
