@@ -46,15 +46,15 @@ OD算法练习
 >
 > 字符串，中等，滑动窗口424
 >
-> 动态规划，简单70
+> 动态规划，简单**70**
 >
-> 动态规划，中等64
+> 动态规划，中等**64**
 >
 > 数组，中等，双指针 16
 >
 > 字符串，中等，双指针15，
 >
-> 数组，中等，栈150
+> **数组，中等，栈150**
 
 ## 第一阶段
 
@@ -334,6 +334,9 @@ var isSubsequence = function(s, t) {
  * @param {string} s
  * @return {number}
  */
+    const regex = /^[+\-*/]{1}$/g
+    s = s.match(regex)
+
 var longestPalindrome = function(s) {
     let ans = 0 
     let hashmap = new Map()
@@ -3606,6 +3609,109 @@ var generateMatrix = function(n) {
 };
 ```
 
+#### [150. 逆波兰表达式求值](https://leetcode.cn/problems/evaluate-reverse-polish-notation/)
+
+给你一个字符串数组 `tokens` ，表示一个根据 [逆波兰表示法](https://baike.baidu.com/item/逆波兰式/128437) 表示的算术表达式。
+
+请你计算该表达式。返回一个表示表达式值的整数。
+
+**注意：**
+
+- 有效的算符为 `'+'`、`'-'`、`'*'` 和 `'/'` 。
+- 每个操作数（运算对象）都可以是一个整数或者另一个表达式。
+- 两个整数之间的除法总是 **向零截断** 。
+- 表达式中不含除零运算。
+- 输入是一个根据逆波兰表示法表示的算术表达式。
+- 答案及所有中间计算结果可以用 **32 位** 整数表示。
+
+ 
+
+**示例 1：**
+
+```
+输入：tokens = ["2","1","+","3","*"]
+输出：9
+解释：该算式转化为常见的中缀算术表达式为：((2 + 1) * 3) = 9
+```
+
+**示例 2：**
+
+```
+输入：tokens = ["4","13","5","/","+"]
+输出：6
+解释：该算式转化为常见的中缀算术表达式为：(4 + (13 / 5)) = 6
+```
+
+**示例 3：**
+
+```
+输入：tokens = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]
+输出：22
+解释：该算式转化为常见的中缀算术表达式为：
+  ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
+= ((10 * (6 / (12 * -11))) + 17) + 5
+= ((10 * (6 / -132)) + 17) + 5
+= ((10 * 0) + 17) + 5
+= (0 + 17) + 5
+= 17 + 5
+= 22
+```
+
+ 
+
+**提示：**
+
+- `1 <= tokens.length <= 104`
+- `tokens[i]` 是一个算符（`"+"`、`"-"`、`"*"` 或 `"/"`），或是在范围 `[-200, 200]` 内的一个整数
+
+ 
+
+**逆波兰表达式：**
+
+逆波兰表达式是一种后缀表达式，所谓后缀就是指算符写在后面。
+
+- 平常使用的算式则是一种中缀表达式，如 `( 1 + 2 ) * ( 3 + 4 )` 。
+- 该算式的逆波兰表达式写法为 `( ( 1 2 + ) ( 3 4 + ) * )` 。
+
+逆波兰表达式主要有以下两个优点：
+
+- 去掉括号后表达式无歧义，上式即便写成 `1 2 + 3 4 + * `也可以依据次序计算出正确结果。
+- 适合用栈操作运算：遇到数字则入栈；遇到算符则取出栈顶两个数字进行计算，并将结果压入栈中
+
+```javascript
+/**
+ * @param {string[]} tokens
+ * @return {number}
+ */
+var evalRPN = function(tokens) {
+    let numStack = []
+    let result = tokens[0]
+    const numRegx = /\d/
+    const symRegx = /^[+\-*/]{1}$/
+    for (let char of tokens) {
+        if (numRegx.test(char)) {
+            numStack.push(char)
+        }
+        if (symRegx.test(char)) {
+            let numRight = parseInt(numStack.pop())
+            let numLeft = parseInt(numStack.pop())
+            if (char === '+') {
+                result = numLeft + numRight
+            } else if (char === '-') {
+                result = numLeft - numRight
+            } else if (char === '*') {
+                result = numLeft * numRight
+            } else if (char === '/') {
+                if (numLeft/numRight<0) result = Math.ceil(numLeft / numRight)
+                else result = Math.floor(numLeft / numRight)
+            }
+            numStack.push(result)
+        }
+    }
+    return result
+};
+```
+
 ### 动态规划
 
 > **解题步骤**：
@@ -3676,6 +3782,318 @@ var fib = function(n) {
         pre2 = temp
     }
     return pre1
+};
+```
+
+#### [746. 使用最小花费爬楼梯](https://leetcode.cn/problems/min-cost-climbing-stairs/)
+
+给你一个整数数组 `cost` ，其中 `cost[i]` 是从楼梯第 `i` 个台阶向上爬需要支付的费用。一旦你支付此费用，即可选择向上爬一个或者两个台阶。
+
+你可以选择从下标为 `0` 或下标为 `1` 的台阶开始爬楼梯。
+
+请你计算并返回达到楼梯顶部的最低花费。
+
+ 
+
+**示例 1：**
+
+```
+输入：cost = [10,15,20]
+输出：15
+解释：你将从下标为 1 的台阶开始。
+- 支付 15 ，向上爬两个台阶，到达楼梯顶部。
+总花费为 15 。
+```
+
+**示例 2：**
+
+```
+输入：cost = [1,100,1,1,1,100,1,1,100,1]
+输出：6
+解释：你将从下标为 0 的台阶开始。
+- 支付 1 ，向上爬两个台阶，到达下标为 2 的台阶。
+- 支付 1 ，向上爬两个台阶，到达下标为 4 的台阶。
+- 支付 1 ，向上爬两个台阶，到达下标为 6 的台阶。
+- 支付 1 ，向上爬一个台阶，到达下标为 7 的台阶。
+- 支付 1 ，向上爬两个台阶，到达下标为 9 的台阶。
+- 支付 1 ，向上爬一个台阶，到达楼梯顶部。
+总花费为 6 。
+```
+
+```javascript
+/**
+ * @param {number[]} cost
+ * @return {number}
+ */
+var minCostClimbingStairs = function(cost) {
+    const dp = [0,0]
+     for (let i =2; i<=cost.length; i++) {
+         dp[i] = Math.min(dp[i-1]+cost[i-1],dp[i-2]+cost[i-2])
+     }
+     return dp[cost.length]
+};
+```
+
+#### [62. 不同路径](https://leetcode.cn/problems/unique-paths/)
+
+一个机器人位于一个 `m x n` 网格的左上角 （起始点在下图中标记为 “Start” ）。
+
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
+
+问总共有多少条不同的路径？
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2018/10/22/robot_maze.png)
+
+```
+输入：m = 3, n = 7
+输出：28
+```
+
+**示例 2：**
+
+```
+输入：m = 3, n = 2
+输出：3
+解释：
+从左上角开始，总共有 3 条路径可以到达右下角。
+1. 向右 -> 向下 -> 向下
+2. 向下 -> 向下 -> 向右
+3. 向下 -> 向右 -> 向下
+```
+
+**示例 3：**
+
+```
+输入：m = 7, n = 3
+输出：28
+```
+
+**示例 4：**
+
+```
+输入：m = 3, n = 3
+输出：6
+```
+
+ 
+
+**提示：**
+
+- `1 <= m, n <= 100`
+- 题目数据保证答案小于等于 `2 * 109`
+
+```javascript
+/**
+ * @param {number} m
+ * @param {number} n
+ * @return {number}
+ */
+var uniquePaths = function(m, n) {
+    let dp = Array(m).fill().map(()=> Array(n).fill(1))
+    for (let i = 1; i < m; i++) {
+        for (let j = 1; j < n; j++) {
+            dp[i][j] = dp[i-1][j] + dp[i][j-1]
+        }
+    }
+    return dp[m-1][n-1]
+};
+```
+
+#### [64. 最小路径和](https://leetcode.cn/problems/minimum-path-sum/)
+
+给定一个包含非负整数的 `*m* x *n*` 网格 `grid` ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+
+**说明：**每次只能向下或者向右移动一步。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/11/05/minpath.jpg)
+
+```
+输入：grid = [[1,3,1],[1,5,1],[4,2,1]]
+输出：7
+解释：因为路径 1→3→1→1→1 的总和最小。
+```
+
+**示例 2：**
+
+```
+输入：grid = [[1,2,3],[4,5,6]]
+输出：12
+```
+
+ 
+
+**提示：**
+
+- `m == grid.length`
+- `n == grid[i].length`
+- `1 <= m, n <= 200`
+- `0 <= grid[i][j] <= 200`
+
+```javascript
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var minPathSum = function(grid) {
+    let h = grid.length, w = grid[0].length
+    dp = Array(h).fill().map(()=> Array(w).fill(0))
+    dp[0][0] = grid[0][0]
+    for (let i = 1; i < h; i++) {
+        dp[i][0] = dp[i-1][0] + grid[i][0]
+    }
+    for (let j = 1; j< w; j++) {
+        dp[0][j] = dp[0][j-1] + grid[0][j]
+    }
+    for (let i = 1; i<h; i++) {
+        for (let j = 1; j<w; j++) {
+            dp[i][j] = Math.min(dp[i-1][j],dp[i][j-1]) + grid[i][j]
+        }
+    }
+    return dp[h-1][w-1]
+};
+```
+
+#### [63. 不同路径 II](https://leetcode.cn/problems/unique-paths-ii/)
+
+一个机器人位于一个 `m x n` 网格的左上角 （起始点在下图中标记为 “Start” ）。
+
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish”）。
+
+现在考虑网格中有障碍物。那么从左上角到右下角将会有多少条不同的路径？
+
+网格中的障碍物和空位置分别用 `1` 和 `0` 来表示。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/11/04/robot1.jpg)
+
+```
+输入：obstacleGrid = [[0,0,0],[0,1,0],[0,0,0]]
+输出：2
+解释：3x3 网格的正中间有一个障碍物。
+从左上角到右下角一共有 2 条不同的路径：
+1. 向右 -> 向右 -> 向下 -> 向下
+2. 向下 -> 向下 -> 向右 -> 向右
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2020/11/04/robot2.jpg)
+
+```
+输入：obstacleGrid = [[0,1],[0,0]]
+输出：1
+```
+
+ 
+
+**提示：**
+
+- `m == obstacleGrid.length`
+- `n == obstacleGrid[i].length`
+- `1 <= m, n <= 100`
+- `obstacleGrid[i][j]` 为 `0` 或 `1`
+
+```javascript
+/**
+ * @param {number[][]} obstacleGrid
+ * @return {number}
+ */
+var uniquePathsWithObstacles = function(obstacleGrid) {
+    if (obstacleGrid[0][0] === 1) return 0
+    let h = obstacleGrid.length, w = obstacleGrid[0].length
+    let dp = Array(h).fill().map(()=> Array(w).fill(0))
+    dp[0][0] = 1
+    for (let i = 1; i<h; i++) {
+        if (obstacleGrid[i][0] === 1) dp[i][0] = 0
+        else dp[i][0] = dp[i-1][0]
+    }
+    for (let j = 1; j<w; j++) {
+        if (obstacleGrid[0][j] === 1) dp[0][j] = 0
+        else dp[0][j] = dp[0][j-1]
+    }
+    for (let i = 1; i<h; i++) {
+        for (let j = 1; j<w; j++) {
+            if (obstacleGrid[i][j] === 1) dp[i][j] = 0
+            else dp[i][j] = dp[i-1][j]+dp[i][j-1]
+        }
+    }
+    return dp[h-1][w-1]
+};
+```
+
+
+
+
+
+### 贪心
+
+#### [455. 分发饼干](https://leetcode.cn/problems/assign-cookies/)
+
+假设你是一位很棒的家长，想要给你的孩子们一些小饼干。但是，每个孩子最多只能给一块饼干。
+
+对每个孩子 `i`，都有一个胃口值 `g[i]`，这是能让孩子们满足胃口的饼干的最小尺寸；并且每块饼干 `j`，都有一个尺寸 `s[j]` 。如果 `s[j] >= g[i]`，我们可以将这个饼干 `j` 分配给孩子 `i` ，这个孩子会得到满足。你的目标是尽可能满足越多数量的孩子，并输出这个最大数值。
+
+ 
+
+**示例 1:**
+
+```
+输入: g = [1,2,3], s = [1,1]
+输出: 1
+解释: 
+你有三个孩子和两块小饼干，3个孩子的胃口值分别是：1,2,3。
+虽然你有两块小饼干，由于他们的尺寸都是1，你只能让胃口值是1的孩子满足。
+所以你应该输出1。
+```
+
+**示例 2:**
+
+```
+输入: g = [1,2], s = [1,2,3]
+输出: 2
+解释: 
+你有两个孩子和三块小饼干，2个孩子的胃口值分别是1,2。
+你拥有的饼干数量和尺寸都足以让所有孩子满足。
+所以你应该输出2.
+```
+
+ 
+
+**提示：**
+
+- `1 <= g.length <= 3 * 104`
+- `0 <= s.length <= 3 * 104`
+- `1 <= g[i], s[j] <= 231 - 1`
+
+```javascript
+/**
+ * @param {number[]} g
+ * @param {number[]} s
+ * @return {number}
+ */
+var findContentChildren = function(g, s) {
+    s.sort((a,b)=>a-b)
+    g.sort((a,b)=>a-b)
+    let ans = 0
+    for (let i = 0; i <s.length; i++) {
+        if (ans<g.length) {
+            if (g[ans]<=s[i]) {
+                ans++
+            }
+        }
+    }
+    return ans
 };
 ```
 
