@@ -36,9 +36,9 @@ OD算法练习
 >
 > 算法练习
 >
-> 字符串，中等，回溯93
+> **字符串，中等，回溯93**
 >
-> 数组，中等，回溯 39，90，46，78
+> 数组，中等，回溯 **39**，90，46，78
 >
 > 数组，中等，深度优先，广度优先，417，994，385
 >
@@ -4094,6 +4094,669 @@ var findContentChildren = function(g, s) {
         }
     }
     return ans
+};
+```
+
+
+
+### 回溯
+
+#### [77. 组合](https://leetcode.cn/problems/combinations/)
+
+给定两个整数 `n` 和 `k`，返回范围 `[1, n]` 中所有可能的 `k` 个数的组合。
+
+你可以按 **任何顺序** 返回答案。
+
+ 
+
+**示例 1：**
+
+```
+输入：n = 4, k = 2
+输出：
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+```
+
+**示例 2：**
+
+```
+输入：n = 1, k = 1
+输出：[[1]]
+```
+
+ 
+
+**提示：**
+
+- `1 <= n <= 20`
+- `1 <= k <= n`
+
+```javascript
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {number[][]}
+ */
+
+let ans = []
+let path = [] 
+var combine = function(n, k) {
+    ans = []
+    combinePartly(1,n,k)
+    return ans
+};
+
+var combinePartly = function(start, n, k) {
+    if (path.length === k) {
+        ans.push([...path])
+        return
+    }
+    for (let i = start; i<=n; i++) {
+        path.push(i)
+        combinePartly(i+1, n, k)
+        path.pop()
+    }
+}
+```
+
+#### [39. 组合总和](https://leetcode.cn/problems/combination-sum/)
+
+给你一个 **无重复元素** 的整数数组 `candidates` 和一个目标整数 `target` ，找出 `candidates` 中可以使数字和为目标数 `target` 的 所有 **不同组合** ，并以列表形式返回。你可以按 **任意顺序** 返回这些组合。
+
+`candidates` 中的 **同一个** 数字可以 **无限制重复被选取** 。如果至少一个数字的被选数量不同，则两种组合是不同的。 
+
+对于给定的输入，保证和为 `target` 的不同组合数少于 `150` 个。
+
+ 
+
+**示例 1：**
+
+```
+输入：candidates = [2,3,6,7], target = 7
+输出：[[2,2,3],[7]]
+解释：
+2 和 3 可以形成一组候选，2 + 2 + 3 = 7 。注意 2 可以使用多次。
+7 也是一个候选， 7 = 7 。
+仅有这两种组合。
+```
+
+**示例 2：**
+
+```
+输入: candidates = [2,3,5], target = 8
+输出: [[2,2,2,2],[2,3,3],[3,5]]
+```
+
+**示例 3：**
+
+```
+输入: candidates = [2], target = 1
+输出: []
+```
+
+ 
+
+**提示：**
+
+- `1 <= candidates.length <= 30`
+- `2 <= candidates[i] <= 40`
+- `candidates` 的所有元素 **互不相同**
+- `1 <= target <= 40`
+
+```javascript
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+let ans = []
+let path = []
+var combinationSum = function(candidates, target) {
+    ans =[]
+    backtracking(candidates, target, 0, 0)
+    return ans
+};
+
+var backtracking = function(candidates, target, sum, start) {
+    if (sum >= target) {
+        if(sum === target) {
+            ans.push([...path])
+        }
+        return
+    }
+    for (let i = start;i<candidates.length; i++) {
+        let sum2 = sum + candidates[i]
+        path.push(candidates[i])
+        backtracking(candidates, target, sum2, i)
+        path.pop()
+    }
+}
+```
+
+#### [40. 组合总和 II](https://leetcode.cn/problems/combination-sum-ii/)
+
+给定一个候选人编号的集合 `candidates` 和一个目标数 `target` ，找出 `candidates` 中所有可以使数字和为 `target` 的组合。
+
+`candidates` 中的每个数字在每个组合中只能使用 **一次** 。
+
+**注意：**解集不能包含重复的组合。 
+
+ 
+
+**示例 1:**
+
+```
+输入: candidates = [10,1,2,7,6,1,5], target = 8,
+输出:
+[
+[1,1,6],
+[1,2,5],
+[1,7],
+[2,6]
+]
+```
+
+**示例 2:**
+
+```
+输入: candidates = [2,5,2,1,2], target = 5,
+输出:
+[
+[1,2,2],
+[5]
+]
+```
+
+ 
+
+**提示:**
+
+- `1 <= candidates.length <= 100`
+- `1 <= candidates[i] <= 50`
+- `1 <= target <= 30`
+
+```javascript
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+
+let ans = []
+let path = []
+let used
+var combinationSum2 = function(candidates, target) {
+    candidates.sort((a,b)=>a-b)
+    used = Array(candidates.length).fill(0)
+    ans =[]
+    backtracking(candidates, target, 0, 0, used)
+    return ans
+};
+
+var backtracking = function(candidates, target, sum, start, used) {
+    if (sum >= target) {
+        if(sum === target) {
+            ans.push([...path])
+        }
+        return
+    }
+    for (let i = start;i<candidates.length; i++) {
+        if (i>0 && candidates[i] === candidates[i-1] && !used[i-1]) continue
+        let sum2 = sum + candidates[i]
+        path.push(candidates[i])
+        used[i] = 1
+        backtracking(candidates, target, sum2, i+1, used)
+        path.pop()
+        used[i]= 0
+    }
+}
+```
+
+#### [216. 组合总和 III](https://leetcode.cn/problems/combination-sum-iii/)
+
+找出所有相加之和为 `n` 的 `k` 个数的组合，且满足下列条件：
+
+- 只使用数字1到9
+- 每个数字 **最多使用一次** 
+
+返回 *所有可能的有效组合的列表* 。该列表不能包含相同的组合两次，组合可以以任何顺序返回。
+
+ 
+
+**示例 1:**
+
+```
+输入: k = 3, n = 7
+输出: [[1,2,4]]
+解释:
+1 + 2 + 4 = 7
+没有其他符合的组合了。
+```
+
+**示例 2:**
+
+```
+输入: k = 3, n = 9
+输出: [[1,2,6], [1,3,5], [2,3,4]]
+解释:
+1 + 2 + 6 = 9
+1 + 3 + 5 = 9
+2 + 3 + 4 = 9
+没有其他符合的组合了。
+```
+
+**示例 3:**
+
+```
+输入: k = 4, n = 1
+输出: []
+解释: 不存在有效的组合。
+在[1,9]范围内使用4个不同的数字，我们可以得到的最小和是1+2+3+4 = 10，因为10 > 1，没有有效的组合。
+```
+
+ 
+
+**提示:**
+
+- `2 <= k <= 9`
+- `1 <= n <= 60`
+
+```javascript
+/**
+ * @param {number} k
+ * @param {number} n
+ * @return {number[][]}
+ */
+var combinationSum3 = function(k, n) {
+    let ans = []
+    let path = []
+    let sum = 0
+    let backtracking = function(start) {
+        if (path.length === k || sum >= n) {
+            if(sum===n&&path.length===k) ans.push([...path])
+            return
+        }
+        for (let i=start; i<=9; i++) {
+            sum+=i
+            path.push(i)
+            backtracking(i+1)
+            path.pop()
+            sum-=i
+        }
+    }
+    backtracking(1)
+    return ans
+};
+```
+
+#### [17. 电话号码的字母组合](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/)
+
+给定一个仅包含数字 `2-9` 的字符串，返回所有它能表示的字母组合。答案可以按 **任意顺序** 返回。
+
+给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+
+![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2021/11/09/200px-telephone-keypad2svg.png)
+
+ 
+
+**示例 1：**
+
+```
+输入：digits = "23"
+输出：["ad","ae","af","bd","be","bf","cd","ce","cf"]
+```
+
+**示例 2：**
+
+```
+输入：digits = ""
+输出：[]
+```
+
+**示例 3：**
+
+```
+输入：digits = "2"
+输出：["a","b","c"]
+```
+
+ 
+
+**提示：**
+
+- `0 <= digits.length <= 4`
+- `digits[i]` 是范围 `['2', '9']` 的一个数字。
+
+```javascript
+/**
+ * @param {string} digits
+ * @return {string[]}
+ */
+var letterCombinations = function(digits) {
+    if (digits == '') return []
+    let charArr = [[],[],['a','b','c'],['d','e','f'],['g','h','i'],['j','k','l'],['m','n','o'],['p','q','r', 's'],['t','u', 'v'],['w','x','y','z']]
+    let numArr = digits.split('').map((item)=>Number(item))
+    let ans = []
+    let path = []
+    let backtracking = function(start){
+        if (path.length === digits.length) {
+            if (path.length === digits.length)ans.push(path.join(''))
+            return 
+        }
+        let i = numArr[start]
+        for(let j = 0; j<charArr[i].length; j++) {
+            path.push(charArr[i][j])
+            backtracking(start+1)
+            path.pop()
+        }
+    }
+    backtracking(0)
+    return ans
+};
+```
+
+#### [131. 分割回文串](https://leetcode.cn/problems/palindrome-partitioning/)
+
+给你一个字符串 `s`，请你将 `s` 分割成一些子串，使每个子串都是 **回文串** 。返回 `s` 所有可能的分割方案。
+
+**回文串** 是正着读和反着读都一样的字符串。
+
+ 
+
+**示例 1：**
+
+```
+输入：s = "aab"
+输出：[["a","a","b"],["aa","b"]]
+```
+
+**示例 2：**
+
+```
+输入：s = "a"
+输出：[["a"]]
+```
+
+ 
+
+**提示：**
+
+- `1 <= s.length <= 16`
+- `s` 仅由小写英文字母组成
+
+```javascript
+/**
+ * @param {string} s
+ * @return {string[][]}
+ */
+var partition = function(s) {
+    function isPalindrome(str) {
+        for (let l = 0, r = str.length-1; l<r ; l++,r--) {
+            if (str[l] !== str[r]) return false 
+        }
+        return true
+    }
+    let ans = []
+    let path = []
+    function backtracking(start) {
+        if (start === s.length) {
+            ans.push([...path])
+            return 
+        }
+        for (let i = start; i<s.length; i++){
+            if (!isPalindrome(s.slice(start,i+1))) continue
+            path.push(s.slice(start, i+1))
+            backtracking(i+1)
+            path.pop()
+        }
+    }
+    backtracking(0)
+    return ans
+};
+```
+
+#### [93. 复原 IP 地址](https://leetcode.cn/problems/restore-ip-addresses/)
+
+**有效 IP 地址** 正好由四个整数（每个整数位于 `0` 到 `255` 之间组成，且不能含有前导 `0`），整数之间用 `'.'` 分隔。
+
+- 例如：`"0.1.2.201"` 和` "192.168.1.1"` 是 **有效** IP 地址，但是 `"0.011.255.245"`、`"192.168.1.312"` 和 `"192.168@1.1"` 是 **无效** IP 地址。
+
+给定一个只包含数字的字符串 `s` ，用以表示一个 IP 地址，返回所有可能的**有效 IP 地址**，这些地址可以通过在 `s` 中插入 `'.'` 来形成。你 **不能** 重新排序或删除 `s` 中的任何数字。你可以按 **任何** 顺序返回答案。
+
+ 
+
+**示例 1：**
+
+```
+输入：s = "25525511135"
+输出：["255.255.11.135","255.255.111.35"]
+```
+
+**示例 2：**
+
+```
+输入：s = "0000"
+输出：["0.0.0.0"]
+```
+
+**示例 3：**
+
+```
+输入：s = "101023"
+输出：["1.0.10.23","1.0.102.3","10.1.0.23","10.10.2.3","101.0.2.3"]
+```
+
+ 
+
+**提示：**
+
+- `1 <= s.length <= 20`
+- `s` 仅由数字组成
+
+```javascript
+/**
+ * @param {string} s
+ * @return {string[]}
+ */
+var restoreIpAddresses = function(s) {
+    let ans = []
+    let path = []
+    function isValidIp(ip) {
+        if (ip.startsWith('0')&&ip.length>1) return false
+        if (Number(ip)>255) return false
+        return true
+    }
+    function backtracking(start){
+        if (path.length === 4) {
+            if (s.length === path.join('.').length-3) ans.push(path.join('.'))
+            return 
+        }
+        for (let i = start; i<s.length&&i-start<3;i++) {
+            if (!isValidIp(s.slice(start, i+1))) break
+            path.push(s.slice(start,i+1))
+            backtracking(i+1)
+            path.pop()
+        }
+    }
+    backtracking(0)
+    return ans
+};
+```
+
+
+
+#### [78. 子集](https://leetcode.cn/problems/subsets/)
+
+给你一个整数数组 `nums` ，数组中的元素 **互不相同** 。返回该数组所有可能的子集（幂集）。
+
+解集 **不能** 包含重复的子集。你可以按 **任意顺序** 返回解集。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [1,2,3]
+输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+```
+
+**示例 2：**
+
+```
+输入：nums = [0]
+输出：[[],[0]]
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums.length <= 10`
+- `-10 <= nums[i] <= 10`
+- `nums` 中的所有元素 **互不相同**
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var subsets = function(nums) {
+    let ans = [[]]
+    let path = []
+    function backtracking(start) {
+        if (start === nums.length) {
+            return 
+        }
+        for (let i = start; i<nums.length; i++) {
+            path.push(nums[i])
+            ans.push([...path])
+            backtracking(i+1)
+            path.pop()
+        }
+    }
+    backtracking(0)
+    return ans
+};
+```
+
+#### [90. 子集 II](https://leetcode.cn/problems/subsets-ii/)
+
+给你一个整数数组 `nums` ，其中可能包含重复元素，请你返回该数组所有可能的子集（幂集）。
+
+解集 **不能** 包含重复的子集。返回的解集中，子集可以按 **任意顺序** 排列。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [1,2,2]
+输出：[[],[1],[1,2],[1,2,2],[2],[2,2]]
+```
+
+**示例 2：**
+
+```
+输入：nums = [0]
+输出：[[],[0]]
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums.length <= 10`
+- `-10 <= nums[i] <= 10`
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var subsetsWithDup = function(nums) {
+    let ans = [[]]
+    let path = []
+    nums.sort((a,b)=>a-b)
+    let used = new Array(nums.length).fill(0)
+    function backtracking(start) {
+        if (start === nums.length) {
+            return
+        }
+        for (let i = start; i<nums.length;i++) {
+            if (i>0 && nums[i]===nums[i-1]&&!used[i-1]) continue
+            used[i] = 1
+            path.push(nums[i])
+            ans.push([...path])
+            backtracking(i+1)
+            path.pop()
+            used[i] = 0
+        }
+    }
+    backtracking(0)
+    return ans
+};
+```
+
+#### [491. 递增子序列](https://leetcode.cn/problems/non-decreasing-subsequences/)
+
+给你一个整数数组 `nums` ，找出并返回所有该数组中不同的递增子序列，递增子序列中 **至少有两个元素** 。你可以按 **任意顺序** 返回答案。
+
+数组中可能含有重复元素，如出现两个整数相等，也可以视作递增序列的一种特殊情况。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [4,6,7,7]
+输出：[[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[6,7],[6,7,7],[7,7]]
+```
+
+**示例 2：**
+
+```
+输入：nums = [4,4,3,2,1]
+输出：[[4,4]]
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums.length <= 15`
+- `-100 <= nums[i] <= 100`
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var findSubsequences = function(nums) {
+    let ans = []
+    let path = []
+    function backtracking(start) {
+        if (start === nums.length) {
+            return
+        }
+        let set = new Set()
+        for (let i=start; i<nums.length;i++) {
+            if ((path.length>0&&!(nums[i]>=path[path.length-1])) || set.has(nums[i])) continue
+            path.push(nums[i])
+            if (path.length>1)ans.push([...path])
+            set.add(nums[i])
+            backtracking(i+1)
+            path.pop()
+        }
+    }
+    backtracking(0)
+    return ans 
 };
 ```
 
