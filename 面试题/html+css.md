@@ -35,6 +35,8 @@
 
 ## 3.css选择器有哪些？优先级？哪些属性可以继承？
 
+> !important > 行内样式（1000）> id选择器（100）> 类选择器=伪类选择器=属性选择器（10）>标签选择器=伪元素选择器（10）> 通配符，继承（0）
+
 ## 4.对HTML语义化的理解
 
 > 1. 利于seo
@@ -64,8 +66,10 @@
 
 ## 8.垂直水平居中的方法
 
-> 1. flex布局：
-> 2. 
+> 1. flex布局：justify-content(主轴):center; align-item(侧轴): center
+> 2. grid布局：display:grid; place-item: center;
+> 2. position+margin: position:absolute; top:50%;left:50%; margin-top: -100px;margin-right: -100px; width: 200px; height: 200px;
+> 2. position+transfrom:position:absolute; top:50%;left:50%; transfrom:translate(-50%); width: 200px; height: 200px;
 
 ## 9.css让元素隐藏
 
@@ -77,7 +81,6 @@
 > - (如果有重叠元素) z-index:-9999
 > - overflow: hidden
 >
-> 
 
 ## 10.介绍一下css盒模型
 
@@ -86,13 +89,32 @@
 
 ## 11.分别介绍一下position的每个值
 
+> 1.absolute: 相对于具有position的父级元素（脱离标准流）
+>
+> 2.relative: 相对于自身原来的位置 （不脱离标准流）
+>
+> 3.fixed：相对于浏览器视口 （脱离标准流）
+>
+> 4.sticky: 粘性定位，相对于浏览器视口 （脱离标准流）
+>
+> 5.static：静态定位
+
 ## 12.href和src的区别？alt和title的区别？
+
+> 
 
 ## 13.float的应用场景？float带来哪些影响？
 
 ## 14.如何清除float？
 
 ## 15.css3新增了哪些特性？
+
+> 1. flex布局
+> 2. IE模型
+> 3. 媒体查询
+> 4. 动画（@keyforms,，animation）
+> 5. border-radius
+> 6. 文字阴影，盒子阴影
 
 ## 16.创建带有id属性的dom元素有什么副作用？
 
@@ -101,6 +123,12 @@
 ## 18.圣杯布局？
 
 ## 19.css性能优化方法？
+
+## 20.px,em,rem的区别？
+
+> 1. px：绝对单位，像素大小
+> 2. em：相对单位，相对于当前标签的字体大小
+> 3. rem：相对于根标签的字体大小
 
 
 

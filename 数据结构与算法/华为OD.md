@@ -38,7 +38,7 @@ OD算法练习
 >
 > **字符串，中等，回溯93**
 >
-> 数组，中等，回溯 **39**，90，46，78
+> 数组，中等，回溯 **39**，**90**，**46**，**78**
 >
 > 数组，中等，深度优先，广度优先，417，994，385
 >
@@ -3712,6 +3712,103 @@ var evalRPN = function(tokens) {
 };
 ```
 
+#### [189. 轮转数组](https://leetcode.cn/problems/rotate-array/)
+
+给定一个整数数组 `nums`，将数组中的元素向右轮转 `k` 个位置，其中 `k` 是非负数。
+
+ 
+
+**示例 1:**
+
+```
+输入: nums = [1,2,3,4,5,6,7], k = 3
+输出: [5,6,7,1,2,3,4]
+解释:
+向右轮转 1 步: [7,1,2,3,4,5,6]
+向右轮转 2 步: [6,7,1,2,3,4,5]
+向右轮转 3 步: [5,6,7,1,2,3,4]
+```
+
+**示例 2:**
+
+```
+输入：nums = [-1,-100,3,99], k = 2
+输出：[3,99,-1,-100]
+解释: 
+向右轮转 1 步: [99,-1,-100,3]
+向右轮转 2 步: [3,99,-1,-100]
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums.length <= 105`
+- `-231 <= nums[i] <= 231 - 1`
+- `0 <= k <= 105`
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var rotate = function(nums, k) {
+    k = k % nums.length
+    function reverse(arr, l, r) {
+        while(l<r) {
+            [arr[l],arr[r]] = [arr[r],arr[l]]
+            l++
+            r--
+        }
+        return arr
+    }
+    nums = reverse(nums, 0, nums.length-1)
+    nums = reverse(nums, 0, k-1)
+    nums = reverse(nums, k, nums.length-1)
+};
+```
+
+#### [48. 旋转图像](https://leetcode.cn/problems/rotate-image/)
+
+给定一个 *n* × *n* 的二维矩阵 `matrix` 表示一个图像。请你将图像顺时针旋转 90 度。
+
+你必须在**[ 原地](https://baike.baidu.com/item/原地算法)** 旋转图像，这意味着你需要直接修改输入的二维矩阵。**请不要** 使用另一个矩阵来旋转图像。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/08/28/mat1.jpg)
+
+```
+输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+输出：[[7,4,1],[8,5,2],[9,6,3]]
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2020/08/28/mat2.jpg)
+
+```
+输入：matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
+输出：[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
+```
+
+ 
+
+**提示：**
+
+- `n == matrix.length == matrix[i].length`
+- `1 <= n <= 20`
+- `-1000 <= matrix[i][j] <= 1000`
+
+```javascript
+
+```
+
+
+
 ### 动态规划
 
 > **解题步骤**：
@@ -4757,6 +4854,128 @@ var findSubsequences = function(nums) {
     }
     backtracking(0)
     return ans 
+};
+```
+
+#### [46. 全排列](https://leetcode.cn/problems/permutations/)
+
+给定一个不含重复数字的数组 `nums` ，返回其 *所有可能的全排列* 。你可以 **按任意顺序** 返回答案。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [1,2,3]
+输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+```
+
+**示例 2：**
+
+```
+输入：nums = [0,1]
+输出：[[0,1],[1,0]]
+```
+
+**示例 3：**
+
+```
+输入：nums = [1]
+输出：[[1]]
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums.length <= 6`
+- `-10 <= nums[i] <= 10`
+- `nums` 中的所有整数 **互不相同**
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var permute = function(nums) {
+    let ans = []
+    let path = []
+    let used = Array(nums.length).fill(0)
+    function backtracking() {
+        if (path.length === nums.length) {
+            ans.push([...path])
+            return
+        }
+        for (let i = 0; i<nums.length; i++) {
+            if (used[i]) continue
+            used[i] = 1
+            path.push(nums[i])
+            backtracking()
+            path.pop()
+            used[i] = 0
+        }
+    }
+    backtracking()
+    return ans
+};
+```
+
+#### [47. 全排列 II](https://leetcode.cn/problems/permutations-ii/)
+
+给定一个可包含重复数字的序列 `nums` ，***按任意顺序*** 返回所有不重复的全排列。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [1,1,2]
+输出：
+[[1,1,2],
+ [1,2,1],
+ [2,1,1]]
+```
+
+**示例 2：**
+
+```
+输入：nums = [1,2,3]
+输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+```
+
+ 
+
+**提示：**
+
+- `1 <= nums.length <= 8`
+- `-10 <= nums[i] <= 10`
+
+```javascript
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var permuteUnique = function(nums) {
+    let ans = []
+    let path = []
+    nums.sort((a,b)=>a-b)
+    let used = Array(nums.length).fill(0)
+    function backtracking() {
+        if (nums.length === path.length) {
+            ans.push([...path])
+            return
+        }
+        for(let i = 0;i<nums.length; i++) {
+            if (used[i] || (i>0&&nums[i]===nums[i-1]&&used[i-1]===0)) continue
+            path.push(nums[i])
+            used[i] = 1
+            backtracking()
+            path.pop()
+            used[i] = 0
+        }
+    }
+    backtracking()
+    return ans
 };
 ```
 
