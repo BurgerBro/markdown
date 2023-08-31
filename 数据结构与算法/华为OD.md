@@ -2426,7 +2426,7 @@ var validateStackSequences = function(pushed, popped) {
 };
 ```
 
-### JS中树定义
+### 二叉树
 
 ```javascript
 function treeNode(val, left, right) {
@@ -2436,7 +2436,7 @@ function treeNode(val, left, right) {
 }
 ```
 
-[102. 二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/)
+#### [102. 二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/)
 
 给你二叉树的根节点 `root` ，返回其节点值的 **层序遍历** 。 （即逐层地，从左到右访问所有节点）。
 
@@ -2504,7 +2504,71 @@ var levelOrder = function(root) {
 };
 ```
 
-[199. 二叉树的右视图](https://leetcode.cn/problems/binary-tree-right-side-view/)
+#### [589. N 叉树的前序遍历](https://leetcode.cn/problems/n-ary-tree-preorder-traversal/)
+
+给定一个 n 叉树的根节点 `root` ，返回 *其节点值的 **前序遍历*** 。
+
+n 叉树 在输入中按层序遍历进行序列化表示，每组子节点由空值 `null` 分隔（请参见示例）。
+
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2018/10/12/narytreeexample.png)
+
+```
+输入：root = [1,null,3,2,4,null,5,6]
+输出：[1,3,5,6,2,4]
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2019/11/08/sample_4_964.png)
+
+```
+输入：root = [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14]
+输出：[1,2,3,6,7,11,14,4,8,12,5,9,13,10]
+```
+
+ 
+
+**提示：**
+
+- 节点总数在范围 `[0, 104]`内
+- `0 <= Node.val <= 104`
+- n 叉树的高度小于或等于 `1000`
+
+```javascript
+/**
+ * // Definition for a Node.
+ * function Node(val, children) {
+ *    this.val = val;
+ *    this.children = children;
+ * };
+ */
+
+/**
+ * @param {Node|null} root
+ * @return {number[]}
+ */
+var preorder = function(root) {
+    let ans =[]
+    if (!root) return ans
+    function preorderFunc(node) {
+        ans.push(node.val)
+        if (node.children) {
+            for (let i=0; i<node.children.length; i++) {
+                preorderFunc(node.children[i])
+            }
+        } 
+    }
+    preorderFunc(root)
+    return ans
+};
+```
+
+
+
+#### [199. 二叉树的右视图](https://leetcode.cn/problems/binary-tree-right-side-view/)
 
 给定一个二叉树的 **根节点** `root`，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
 
@@ -2569,7 +2633,7 @@ var rightSideView = function(root) {
 };
 ```
 
-[637. 二叉树的层平均值](https://leetcode.cn/problems/average-of-levels-in-binary-tree/)
+#### [637. 二叉树的层平均值](https://leetcode.cn/problems/average-of-levels-in-binary-tree/)
 
 给定一个非空二叉树的根节点 `root` , 以数组的形式返回每一层节点的平均值。与实际答案相差 `10-5` 以内的答案可以被接受。
 
@@ -2636,7 +2700,7 @@ var averageOfLevels = function(root) {
 };
 ```
 
-[429. N 叉树的层序遍历](https://leetcode.cn/problems/n-ary-tree-level-order-traversal/)
+#### [429. N 叉树的层序遍历](https://leetcode.cn/problems/n-ary-tree-level-order-traversal/)
 
 给定一个 N 叉树，返回其节点值的*层序遍历*。（即从左到右，逐层遍历）。
 
@@ -2701,7 +2765,7 @@ var levelOrder = function(root) {
 };
 ```
 
-[515. 在每个树行中找最大值](https://leetcode.cn/problems/find-largest-value-in-each-tree-row/)
+#### [515. 在每个树行中找最大值](https://leetcode.cn/problems/find-largest-value-in-each-tree-row/)
 
 给定一棵二叉树的根节点 `root` ，请找出该二叉树中每一层的最大值。
 
@@ -2763,7 +2827,7 @@ var largestValues = function(root) {
 };
 ```
 
-[116. 填充每个节点的下一个右侧节点指针](https://leetcode.cn/problems/populating-next-right-pointers-in-each-node/)
+#### [116. 填充每个节点的下一个右侧节点指针](https://leetcode.cn/problems/populating-next-right-pointers-in-each-node/)
 
 给定一个 **完美二叉树** ，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：
 
@@ -2838,7 +2902,7 @@ var connect = function(root) {
 };
 ```
 
-[117. 填充每个节点的下一个右侧节点指针 II](https://leetcode.cn/problems/populating-next-right-pointers-in-each-node-ii/)
+#### [117. 填充每个节点的下一个右侧节点指针 II](https://leetcode.cn/problems/populating-next-right-pointers-in-each-node-ii/)
 
 给定一个二叉树：
 
@@ -2916,7 +2980,7 @@ var connect = function(root) {
 };
 ```
 
-[104. 二叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)
+#### [104. 二叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)
 
 给定一个二叉树 `root` ，返回其最大深度。
 
@@ -3040,6 +3104,8 @@ var minDepth = function(root) {
     return min
 };
 ```
+
+
 
 ### 数组
 
