@@ -397,7 +397,7 @@ for (let i = 0; i<arr.length-1; i++) {
 
 ## 33.什么是内存泄漏，哪些操作会导致内存泄漏
 
-> 1. 内存泄漏指的是不再使用的内存没有被及时回收，导致一直占用空间
+> 1. 内存泄漏指的是不再使用的内存没有被及时回收，导致一直占用空间，系统失去对一段内存空间的控制
 > 2. 导致内存泄露的操作：闭包，setTimeout第一个参数为字符串，对象循环引用，console.log
 
 ## 34.什么是垃圾回收机制？有哪些方法？
@@ -543,18 +543,18 @@ for (let i = 0; i<arr.length-1; i++) {
 >      constructor(name) {
 >        this.name = name;
 >      }
->    
+>       
 >      sayHello() {
 >        console.log(`Hello from ${this.name}`);
 >      }
 >    }
->    
+>       
 >    class Child extends Parent {
 >      constructor(name) {
 >        super(name);
 >      }
 >    }
->    
+>       
 >    const child = new Child('Child');
 >    child.sayHello(); // Output: "Hello from Child"
 >    ```

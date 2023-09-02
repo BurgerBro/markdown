@@ -80,3 +80,35 @@
 > 	eventbus
 > 	localstorage/sessionstorage
 > 	vuex
+
+## 9.mvc和mvvm的区别
+
+> mvc和mvvm都是一种设计思想，有助于将程序结构设计的更加清晰，降低耦合度，提高重用性。
+>
+> 他们之间最大的区别在于mvvm实现了view和model之间的自动同步
+>
+> - 当model改变时不用手动操作dom去改变view的显示，view的显示会自动改变
+>
+> **阐述一下你所理解的MVVM响应式原理**
+>
+> - vue是采用数据劫持配合发布者-订阅者的模式的方式，
+>   - 通过**Object.defineProperty()来劫持各个属性的getter和setter**，
+>   - 在数据变动时，发布消息给依赖收集器（dep中的subs），去通知（notify）观察者，做出对应的回调函数，更新视图
+> - MVVM作为绑定的入口，整合Observer,Compile和Watcher三者，
+>   - 通过Observer来监听model数据变化，
+>   - 通过Compile来解析编译模板指令，
+>   - 最终利用Watcher搭起Observer，Compile之间的通信桥路，
+>   - 达到**数据变化Observer）=>视图更新**；**视图交互变化=>数据model变更**的双向绑定效果。
+
+
+
+
+
+
+
+
+
+
+
+
+
