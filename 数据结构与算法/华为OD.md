@@ -3328,6 +3328,273 @@ var invertTree = function(root) {
 };
 ```
 
+#### [110. 平衡二叉树](https://leetcode.cn/problems/balanced-binary-tree/)
+
+给定一个二叉树，判断它是否是高度平衡的二叉树。
+
+本题中，一棵高度平衡二叉树定义为：
+
+> 一个二叉树*每个节点* 的左右两个子树的高度差的绝对值不超过 1 。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2020/10/06/balance_1.jpg)
+
+```
+输入：root = [3,9,20,null,null,15,7]
+输出：true
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.com/uploads/2020/10/06/balance_2.jpg)
+
+```
+输入：root = [1,2,2,3,3,null,null,4,4]
+输出：false
+```
+
+**示例 3：**
+
+```
+输入：root = []
+输出：true
+```
+
+ 
+
+**提示：**
+
+- 树中的节点数在范围 `[0, 5000]` 内
+- `-104 <= Node.val <= 104`
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isBalanced = function(root) {
+    function judge(root){
+        if (!root) return 0
+        let leftHeight = judge(root.left)
+        if (leftHeight == -1) return -1
+        let rightHeight = judge(root.right)
+        if (rightHeight == -1) return -1
+        if (Math.abs(leftHeight-rightHeight)>1) {
+            return -1
+        }
+        else {
+            return Math.max(leftHeight, rightHeight)+1
+        }
+    }
+    return !(judge(root)===-1)
+};
+```
+
+#### [257. 二叉树的所有路径](https://leetcode.cn/problems/binary-tree-paths/)
+
+给你一个二叉树的根节点 `root` ，按 **任意顺序** ，返回所有从根节点到叶子节点的路径。
+
+**叶子节点** 是指没有子节点的节点。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2021/03/12/paths-tree.jpg)
+
+```
+输入：root = [1,2,3,null,5]
+输出：["1->2->5","1->3"]
+```
+
+**示例 2：**
+
+```
+输入：root = [1]
+输出：["1"]
+```
+
+ 
+
+**提示：**
+
+- 树中节点的数目在范围 `[1, 100]` 内
+- `-100 <= Node.val <= 100`
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {string[]}
+ */
+var binaryTreePaths = function(root) {
+    let ans = []
+    let path = []
+    function backTracking(node) {
+        if (!node) return 
+        if (!node.left && !node.right) {
+            path.push(node.val)            
+            ans.push(path.join('->'))
+            path.pop()
+            return 
+        }
+        path.push(node.val)
+        backTracking(node.left)
+        path.pop()
+        path.push(node.val)
+        backTracking(node.right)
+        path.pop()
+    }
+    backTracking(root)
+    return ans
+};
+```
+
+#### [404. 左叶子之和](https://leetcode.cn/problems/sum-of-left-leaves/)
+
+给定二叉树的根节点 `root` ，返回所有左叶子之和。
+
+ 
+
+**示例 1：**
+
+![img](https://assets.leetcode.com/uploads/2021/04/08/leftsum-tree.jpg)
+
+```
+输入: root = [3,9,20,null,null,15,7] 
+输出: 24 
+解释: 在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24
+```
+
+**示例 2:**
+
+```
+输入: root = [1]
+输出: 0
+```
+
+ 
+
+**提示:**
+
+- 节点数在 `[1, 1000]` 范围内
+- `-1000 <= Node.val <= 1000`
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var sumOfLeftLeaves = function(root) {
+    if (!root) return 0
+    let leftCount = sumOfLeftLeaves(root.left)
+    if (root.left&&!root.left.left&&!root.left.right) leftCount += root.left.val
+    let rightCount = sumOfLeftLeaves(root.right)
+    return leftCount + rightCount
+};
+```
+
+
+
+#### [513. 找树左下角的值](https://leetcode.cn/problems/find-bottom-left-tree-value/)
+
+给定一个二叉树的 **根节点** `root`，请找出该二叉树的 **最底层 最左边** 节点的值。
+
+假设二叉树中至少有一个节点。
+
+ 
+
+**示例 1:**
+
+![img](https://assets.leetcode.com/uploads/2020/12/14/tree1.jpg)
+
+```
+输入: root = [2,1,3]
+输出: 1
+```
+
+**示例 2:**
+
+![img](https://assets.leetcode.com/uploads/2020/12/14/tree2.jpg)
+
+```
+输入: [1,2,3,4,null,5,6,null,null,7]
+输出: 7
+```
+
+ 
+
+**提示:**
+
+- 二叉树的节点个数的范围是 `[1,104]`
+- `-231 <= Node.val <= 231 - 1` 
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var findBottomLeftValue = function(root) {
+    let result = 0
+    let maxDeep = -Infinity
+    function backTracking(node, deep) {
+        if (!node.left&&!node.right) {
+            if (deep>maxDeep) {
+                maxDeep = deep
+                result = node.val
+            }
+            return
+        }
+        if (node.left) {
+            deep++
+            backTracking(node.left, deep)
+            deep--
+        }
+        if (node.right) {
+            deep++
+            backTracking(node.right, deep)
+            deep--
+        }
+    }
+    backTracking(root, 0)
+    return result
+};
+```
+
 
 
 ### 数组
